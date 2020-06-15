@@ -31,4 +31,4 @@ Suggests:
 URL: https://cmirzayi.github.io/EpiForBioWorkshop2020/
 BugReports: https://github.com/cmirzayi/EpiForBioWorkshop2020/issues/new
 VignetteBuilder: knitr
-DockerImage: cmirzayi/EpiForBioWorkshop2020:latest
+DockerImage: cmirzayi/epiforbioworkshop2020:latest
