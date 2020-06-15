@@ -1,5 +1,5 @@
-Package: EpiForBioWOrkshop2020
-Title: Epidemiology for Bioinformaticians
+Package: EpiForBioWorkshop2020
+Title: Epidemiology for Bioinformaticians Workshop
 Version: 0.1.5
 Authors@R: 
     person(given = "Chloe",
