@@ -6,16 +6,13 @@ Authors@R:
            family = "Mirzayi",
            role = c("aut", "cre"),
            email = "cmirzayi@gmail.com",
-           comment = c(ORCID = "0000-0002-9817-2868")),
+           comment = c(ORCID = "0000-0002-9817-2868"))
     person(given = "Levi",
            family = "Waldron",
            role = c("aut", "cre"),
            email = "Levi.Waldron@sph.cuny.edu",
            comment = c(ORCID = "0000-0003-2725-0694"))
-Description: Concepts of causal inference in epidemiology have important 
-ramifications for studies across bioinformatics and other fields of health 
-research. In this workship, we introduce basic concepts of epidemiology, 
-study design, and causal inference for bioinformaticians. 
+Description: In this workship, we introduce basic concepts of epidemiology, study design, and causal inference for bioinformaticians. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -5,7 +5,7 @@ output:
     toc: true
     toc_depth: 3
     fig_width: 5
-bibliography: "`r system.file(package='EpiForBioWorkshop', 'vignettes', 'bibliography.bib')`"
+#bibliography: "`r system.file(package='EpiForBioWorkshop', 'vignettes', 'bibliography.bib')`"
 vignette: >
   %\VignetteIndexEntry{EpiForBioWorkshop}
   %\VignetteEngine{knitr::rmarkdown}
