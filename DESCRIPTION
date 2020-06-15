@@ -1,16 +1,21 @@
-Package: BuildABiocWorkshop2020
-Title: Bioconductor Workshop Template and Github Actions
-Version: 0.1.1
+Package: EpiForBioWOrkshop2020
+Title: Epidemiology for Bioinformaticians
+Version: 0.1.5
 Authors@R: 
-    person(given = "Sean",
-           family = "Davis",
+    person(given = "Chloe",
+           family = "Mirzayi",
            role = c("aut", "cre"),
-           email = "seandavi@gmail.com",
-           comment = c(ORCID = "your-orc-id-here"))
-Description: This package serves as a template for using github actions to 
-    prepare a Bioconductor Workshop package for use. In particular,
-    a pkgdown website and docker image are generated based on workflow 
-    settings. 
+           email = "cmirzayi@gmail.com",
+           comment = c(ORCID = "0000-0002-9817-2868")),
+    person(given = "Levi",
+           family = "Waldron",
+           role = c("aut", "cre"),
+           email = "Levi.Waldron@sph.cuny.edu",
+           comment = c(ORCID = "0000-0003-2725-0694"))
+Description: Concepts of causal inference in epidemiology have important 
+ramifications for studies across bioinformatics and other fields of health 
+research. In this workship, we introduce basic concepts of epidemiology, 
+study design, and causal inference for bioinformaticians. 
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -19,10 +24,14 @@ RoxygenNote: 7.1.0
 Depends: 
     Biobase
 Suggests: 
+    BiocStyle,
     knitr,
     rmarkdown,
-    pkgdown
-URL: https://seandavi.github.io/BuildABiocWorkshop2020/
-BugReports: https://github.com/seandavi/BuildABiocWorkshop2020/issues/new/choose
+    dagitty,
+    DESeq2,
+    edgeR,
+    limma
+URL: https://cmirzayi.github.io/EpiForBioWorkshop2020/
+BugReports: https://github.com/cmirzayi/EpiForBioWorkshop2020/issues/new
 VignetteBuilder: knitr
-DockerImage: seandavi/buildabiocworkshop2020:latest
+DockerImage: cmirzayi/EpiForBioWorkshop2020:latest
