@@ -28,7 +28,9 @@ Suggests:
     dagitty,
     DESeq2,
     edgeR,
-    limma
+    limma,
+    curatedMetagenomicData,
+    phyloseq
 URL: https://cmirzayi.github.io/EpiForBioWorkshop2020/
 BugReports: https://github.com/cmirzayi/EpiForBioWorkshop2020/issues/new
 VignetteBuilder: knitr

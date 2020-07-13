@@ -1,49 +1,61 @@
-# BuildABiocWorkshop2020
+# Epidemiology for Bioinformaticians
 
-This package is a template for building a Bioconductor 2020 workshop. The package
-includes Github actions to:
+# Instructor(s) name(s) and contact information
 
-1. Set up bioconductor/bioconductor_docker:devel on Github resources
-2. Install package dependencies for your package (based on the `DESCRIPTION` file)
-3. Run `rcmdcheck::rcmdcheck`
-4. Build a pkgdown website and push it to github pages
-5. Build a docker image with the installed package and dependencies
+Chloe Mirzayi, cmirzayi@gmail.com
+Levi Waldron, levi.waldron@sph.cuny.edu
+CUNY School of Public Health, 55 W 125th St, New York, NY 10027
 
-## Responsibilities
+# Workshop Description
 
-This year, package authors will be primarily responsible for:
+Concepts of causal inference in epidemiology have important ramifications for studies across bioinformatics and other fields of health research. In this workship, we introduce basic concepts of epidemiology, study design, and causal inference for bioinformaticians. Emphasis is placed on addressing bias and confounding as common threats to assessing a causal pathway in a variety of study design types and when using common forms of analyses such as GWAS and survival analysis. Workshop participants will have the opportunity to create their own structural causal models (DAGs) and use this model to determine how to assess an estimated causal effect. Examples using DESeq2, edgeR, and limma will be used to show how multivariable models can be fitted depending on the hypothesized causal relationship.
 
-1. Creating a landing site of their choosing for their workshops (a website). This website should be listed in the `DESCRIPTION` file as the `URL`.
-2. Creating a docker image that will contain workshop materials and the installed packages necessary to run those materials. The name of the resulting docker image, including "tag" if desired, should be listed in a non-standard tag, `DockerImage:` in the `DESCRIPTION` file. 
+Presented successfully at BioC2019 to 30 people, updates that material by adding a brief demonstration of ggdag, revised conceptual emphasis based on participant feedback, and applied examples using data from curatedMetagenomicData.
 
-Both of those tasks can be accomplished using the Github actions included in this template package. 
+## Pre-requisites
 
-## Details
+* Basic knowledge of R syntax
+* Familiarity with regression
 
-For detailed instructions, see the `How to build a workshop` article/vignette.
+## Workshop Participation
 
-## Results of successful deployment
+Students will have the opportunity to solve toy problems and execute example code in R.
 
-- A working docker image that contains the installed package and dependencies.
-- An up-to-date `pkgdown` website at https://YOURUSERNAME.github.io/YOURREPOSITORYNAME/
-- Docker image will be tagged with `latest`, `sha-XXXXXX` where `XXXXXX` is the hash of the current `master` commit, and `master`. 
+## _R_ / _Bioconductor_ packages used
 
-## To use the resulting image:
+* daggity
+* ggdag
+* DESeq2
+* edgeR
+* limma
+* curatedMetagenomicData
 
-```sh
-docker run -e PASSWORD=<choose_a_password_for_rstudio> -p 8787:8787 YOURDOCKERIMAGENAME
-```
-Once running, navigate to https://localhost:8787/ and then login with `rstudio`:`yourchosenpassword`. 
-
-To try with **this** repository docker image:
-
-```sh
-docker run -e PASSWORD=abc -p 8787:8787 seandavi/buildabiocworkshop2020
-```
+## Time outline
 
 
-## Whatcha get
+| Activity                     | Time |
+|------------------------------|------|
+| Counterfactuals              | 10m  |
+| Causal Inference	           | 10m  |
+| Bias and Confounding	       | 15m  |
+| Making DAGs in R             | 10m  |
+| Example using cMD            | 15m  |
 
-https://seandavi.github.io/BuildABiocWorkshop2020
 
-![dockerhub](https://github.com/seandavi/BuildABiocWorkshop2020/raw/master/inst/images/dockerhub_result.png)
+# Workshop goals and objectives
+
+## Learning goals
+
+* Describe the differences in common experimental and observational study designs
+* Apply concepts of study design to common analyses in bioinformatics such as GWAS and survival analysis
+* Understand key concepts of epidemiology such as causal inference, confounders, collidors, mediators, counterfactuals, and study designs
+* Develop a structural causal diagram/directed acyclic graph (DAG) of causal relationships and assess pathways of interest
+* Analyze metagenomic data using principles of causal inference to properly adjust for potential confounders
+
+## Learning objectives
+
+* Assess a study design in terms of causal inference
+* Learn about path blocking to prevent confounding
+* Create a DAG in R using daggity and ggdag
+* Identify situations when multivariate adjustment for variables is inappropriate
+* Specify a model based on a DAG and then fit that model to data using DESeq2, edgeR, and limma
