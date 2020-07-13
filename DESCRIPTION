@@ -20,7 +20,8 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: 
     Biobase,
-    pkgdown
+    pkgdown,
+    Rcpp
 Suggests: 
     BiocStyle,
     knitr,
