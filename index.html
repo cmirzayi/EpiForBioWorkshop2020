@@ -87,58 +87,106 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="buildabiocworkshop2020" class="section level1">
+
+<div id="epidemiology-for-bioinformaticians" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#buildabiocworkshop2020" class="anchor"></a>BuildABiocWorkshop2020</h1></div>
-<p>This package is a template for building a Bioconductor 2020 workshop. The package includes Github actions to:</p>
-<ol>
-<li>Set up bioconductor/bioconductor_docker:devel on Github resources</li>
-<li>Install package dependencies for your package (based on the <code>DESCRIPTION</code> file)</li>
-<li>Run <code><a href="https://rdrr.io/pkg/rcmdcheck/man/rcmdcheck.html">rcmdcheck::rcmdcheck</a></code>
-</li>
-<li>Build a pkgdown website and push it to github pages</li>
-<li>Build a docker image with the installed package and dependencies</li>
-</ol>
-<div id="responsibilities" class="section level2">
-<h2 class="hasAnchor">
-<a href="#responsibilities" class="anchor"></a>Responsibilities</h2>
-<p>This year, package authors will be primarily responsible for:</p>
-<ol>
-<li>Creating a landing site of their choosing for their workshops (a website). This website should be listed in the <code>DESCRIPTION</code> file as the <code>URL</code>.</li>
-<li>Creating a docker image that will contain workshop materials and the installed packages necessary to run those materials. The name of the resulting docker image, including “tag” if desired, should be listed in a non-standard tag, <code>DockerImage:</code> in the <code>DESCRIPTION</code> file.</li>
-</ol>
-<p>Both of those tasks can be accomplished using the Github actions included in this template package.</p>
+<a href="#epidemiology-for-bioinformaticians" class="anchor"></a>Epidemiology for Bioinformaticians</h1></div>
 </div>
-<div id="details" class="section level2">
-<h2 class="hasAnchor">
-<a href="#details" class="anchor"></a>Details</h2>
-<p>For detailed instructions, see the <code>How to build a workshop</code> article/vignette.</p>
+<div id="instructors-names-and-contact-information" class="section level1">
+<h1 class="hasAnchor">
+<a href="#instructors-names-and-contact-information" class="anchor"></a>Instructor(s) name(s) and contact information</h1>
+<p>Chloe Mirzayi, <a href="mailto:cmirzayi@gmail.com" class="email">cmirzayi@gmail.com</a> Levi Waldron, <a href="mailto:levi.waldron@sph.cuny.edu" class="email">levi.waldron@sph.cuny.edu</a> CUNY School of Public Health, 55 W 125th St, New York, NY 10027</p>
 </div>
-<div id="results-of-successful-deployment" class="section level2">
+<div id="workshop-description" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workshop-description" class="anchor"></a>Workshop Description</h1>
+<p>Concepts of causal inference in epidemiology have important ramifications for studies across bioinformatics and other fields of health research. In this workship, we introduce basic concepts of epidemiology, study design, and causal inference for bioinformaticians. Emphasis is placed on addressing bias and confounding as common threats to assessing a causal pathway in a variety of study design types and when using common forms of analyses such as GWAS and survival analysis. Workshop participants will have the opportunity to create their own structural causal models (DAGs) and use this model to determine how to assess an estimated causal effect. Examples using DESeq2, edgeR, and limma will be used to show how multivariable models can be fitted depending on the hypothesized causal relationship.</p>
+<p>Presented successfully at BioC2019 to 30 people, updates that material by adding a brief demonstration of ggdag, revised conceptual emphasis based on participant feedback, and applied examples using data from curatedMetagenomicData.</p>
+<div id="pre-requisites" class="section level2">
 <h2 class="hasAnchor">
-<a href="#results-of-successful-deployment" class="anchor"></a>Results of successful deployment</h2>
+<a href="#pre-requisites" class="anchor"></a>Pre-requisites</h2>
 <ul>
-<li>A working docker image that contains the installed package and dependencies.</li>
-<li>An up-to-date <code>pkgdown</code> website at <a href="https://YOURUSERNAME.github.io/YOURREPOSITORYNAME/" class="uri">https://YOURUSERNAME.github.io/YOURREPOSITORYNAME/</a>
-</li>
-<li>Docker image will be tagged with <code>latest</code>, <code>sha-XXXXXX</code> where <code>XXXXXX</code> is the hash of the current <code>master</code> commit, and <code>master</code>.</li>
+<li>Basic knowledge of R syntax</li>
+<li>Familiarity with regression</li>
 </ul>
 </div>
-<div id="to-use-the-resulting-image" class="section level2">
+<div id="workshop-participation" class="section level2">
 <h2 class="hasAnchor">
-<a href="#to-use-the-resulting-image" class="anchor"></a>To use the resulting image:</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1"></a><span class="ex">docker</span> run -e PASSWORD=<span class="op">&lt;</span>choose_a_password_for_rstudio<span class="op">&gt;</span> -p 8787:8787 YOURDOCKERIMAGENAME</span></code></pre></div>
-<p>Once running, navigate to <a href="https://localhost:8787/" class="uri">https://localhost:8787/</a> and then login with <code>rstudio</code>:<code>yourchosenpassword</code>.</p>
-<p>To try with <strong>this</strong> repository docker image:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1"></a><span class="ex">docker</span> run -e PASSWORD=abc -p 8787:8787 seandavi/buildabiocworkshop2020</span></code></pre></div>
+<a href="#workshop-participation" class="anchor"></a>Workshop Participation</h2>
+<p>Students will have the opportunity to solve toy problems and execute example code in R.</p>
 </div>
-<div id="whatcha-get" class="section level2">
+<div id="r--bioconductor-packages-used" class="section level2">
 <h2 class="hasAnchor">
-<a href="#whatcha-get" class="anchor"></a>Whatcha get</h2>
-<p><a href="https://seandavi.github.io/BuildABiocWorkshop2020" class="uri">https://seandavi.github.io/BuildABiocWorkshop2020</a></p>
-<p><img src="https://github.com/seandavi/BuildABiocWorkshop2020/raw/master/inst/images/dockerhub_result.png" alt="dockerhub"></p>
+<a href="#r--bioconductor-packages-used" class="anchor"></a><em>R</em> / <em>Bioconductor</em> packages used</h2>
+<ul>
+<li>daggity</li>
+<li>ggdag</li>
+<li>DESeq2</li>
+<li>edgeR</li>
+<li>limma</li>
+<li>curatedMetagenomicData</li>
+</ul>
+</div>
+<div id="time-outline" class="section level2">
+<h2 class="hasAnchor">
+<a href="#time-outline" class="anchor"></a>Time outline</h2>
+<table class="table">
+<thead><tr class="header">
+<th>Activity</th>
+<th>Time</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Counterfactuals</td>
+<td>10m</td>
+</tr>
+<tr class="even">
+<td>Causal Inference</td>
+<td>10m</td>
+</tr>
+<tr class="odd">
+<td>Bias and Confounding</td>
+<td>15m</td>
+</tr>
+<tr class="even">
+<td>Making DAGs in R</td>
+<td>10m</td>
+</tr>
+<tr class="odd">
+<td>Example using cMD</td>
+<td>15m</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
+<div id="workshop-goals-and-objectives" class="section level1">
+<h1 class="hasAnchor">
+<a href="#workshop-goals-and-objectives" class="anchor"></a>Workshop goals and objectives</h1>
+<div id="learning-goals" class="section level2">
+<h2 class="hasAnchor">
+<a href="#learning-goals" class="anchor"></a>Learning goals</h2>
+<ul>
+<li>Describe the differences in common experimental and observational study designs</li>
+<li>Apply concepts of study design to common analyses in bioinformatics such as GWAS and survival analysis</li>
+<li>Understand key concepts of epidemiology such as causal inference, confounders, collidors, mediators, counterfactuals, and study designs</li>
+<li>Develop a structural causal diagram/directed acyclic graph (DAG) of causal relationships and assess pathways of interest</li>
+<li>Analyze metagenomic data using principles of causal inference to properly adjust for potential confounders</li>
+</ul>
+</div>
+<div id="learning-objectives" class="section level2">
+<h2 class="hasAnchor">
+<a href="#learning-objectives" class="anchor"></a>Learning objectives</h2>
+<ul>
+<li>Assess a study design in terms of causal inference</li>
+<li>Learn about path blocking to prevent confounding</li>
+<li>Create a DAG in R using daggity and ggdag</li>
+<li>Identify situations when multivariate adjustment for variables is inappropriate</li>
+<li>Specify a model based on a DAG and then fit that model to data using DESeq2, edgeR, and limma</li>
+</ul>
+</div>
+</div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
