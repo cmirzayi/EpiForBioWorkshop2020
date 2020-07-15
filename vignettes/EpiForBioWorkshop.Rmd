@@ -21,71 +21,17 @@ Levi Waldron, levi.waldron@sph.cuny.edu
 
 CUNY School of Public Health, 55 W 125th St, New York, NY 111027
 
-## Workshop Description
-
-Concepts of causal inference in epidemiology have important ramifications for studies across bioinformatics and other fields of health research. In this workshop, we introduce basic concepts of epidemiology, study design, and causal inference for bioinformaticians. Emphasis is placed on addressing bias and confounding as common threats to assessing a causal pathway in a variety of study design types and when using common forms of analyses such as GWAS and survival analysis. Workshop participants will have the opportunity to create their own structural causal models (DAGs) and use this model to determine how to assess an estimated causal effect. Examples using DESeq2, edgeR, and limma will be used to show how multivariable models can be fitted depending on the hypothesized causal relationship. 
-
-### Pre-requisites
-
-* Basic knowledge of R syntax
-* Familiarity with regression
-
-### Workshop Participation
-
-Students will have the opportunity to solve toy problems and execute example code in R.
-
-### R / Bioconductor packages used
-
-```{r, eval = FALSE}
-if (!requireNamespace("BiocManager", quietly = TRUE))
-    install.packages("BiocManager")
-## Bioconductor 3.9 Stable Release
-BiocManager::install(version = "3.9")
-```
-
-* [dagitty](https://cran.r-project.org/web/packages/dagitty/index.html)
-* [DESeq2](https://bioconductor.org/packages/release/bioc/html/DESeq2.html)
-* [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html)
-* [limma](https://bioconductor.org/packages/release/bioc/html/limma.html)
-
 ```{r, message = FALSE}
+library(curatedMetagenomicData)
 library(dagitty)
 library(DESeq2)
-library(edgeR)
-library(limma)
+library(phyloseq)
+library(ggdag)
 ```
-
-### Time outline
-
-| Activity              | Time |
-| --------------------- | ---- |
-| Counterfactuals       | 15m  |
-| Causal Inference      | 10m  |
-| Bias and Confounding  | 10m  |
-| Causal Inference in R | 10m  |
-| Toy Problems          | 15m  |
-
-## Workshop goals and objectives
-
-### Learning goals
-
-* Describe the differences in common experimental and observational study designs
-* Apply concepts of study design to common analyses in bioinformatics such as GWAS and survival analysis
-* Understand key concepts of epidemiology such as causal inference, confounders, colliders, mediators, counterfactuals, and study designs
-* Develop a structural causal diagram/directed acyclic graph (DAG) of causal relationships and assess pathways of interest
-* Recognize the limitations and assumptions of multivariable regression in observational studies, and how this affects common analyses such as DESeq2, edgeR, and limma
-
-### Learning objectives
-
-* Assess a study design in terms of causal inference
-* Learn about path blocking to prevent confounding
-* Create a DAG in R using daggity
-* Identify situations when multivariate adjustment for variables is inappropriate
-* Select the correct model formula/matrix in DESeq2, edgeR, or limma to deconfound
 
 ## Introduction: Just what is a cause anyway?
 
-Requisite boring dictionary definition:
+Dictionary definition
 
 > something that brings about an effect or a result (Merriam-Webster)
 
@@ -307,30 +253,49 @@ for( n in names(g1) ){
 }
 ```
 
-### DESeq2
-DESeq2 uses negative binomial regression. As such, it allows you to deconfound by including the confounder as a variable in the design statement:
-```{r, eval = FALSE}
-ddsSE <- DESeqDataSet(se, design = ~ exposure + confounder1 + confounder2)
-ddsSE
+
+## Example in curatedMetagenomicData
+For this example, we use the VogtmannE 2016 dataset in cMD. The dataset has 52 cases of colorectal cancer and 58 controls.
+
+First, download the data, extract the expressionset, and only take responses for which we have a value for study condition.
+```{r}
+vogtmann <- curatedMetagenomicData("VogtmannE_2016.metaphlan_bugs_list.stool", dryrun = FALSE)
+vm.eset <-vogtmann[[1]]
+table(vm.eset$study_condition, useNA="ifany")
+vm.sub <- vm.eset[,!is.na(vm.eset$study_condition)]
+table(vm.sub$study_condition, useNA="ifany")
+```
+First we conduct a basic analysis to examine whether there are any statistically significant differences in taxa of microbiota by study condition. We use a forgiving alpha of 0.10 for adjusted p-values. We find 5 significant taxa in this crude analysis.
+```{r}
+vm.pseq <- ExpressionSet2phyloseq(vm.sub)
+dx_only <- phyloseq_to_deseq2(vm.pseq, ~ study_condition)
+dx_only <- DESeq(dx_only, test="Wald", fitType="parametric")
+res = results(dx_only, cooksCutoff = FALSE)
+alpha = 0.10
+sigtab = res[which(res$padj < alpha), ]
+sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(vm.pseq)[rownames(sigtab), ], "matrix"))
+head(sigtab)
 ```
 
-### edgeR and limma
-You can use `model.matrix()` to specify the exposure and confounders:
-```{r, eval = FALSE}
-batch <- factor(ds$Batch)
-treat <- factor(ds$tx)
-y <- factor(ds$surv)
-design <- model.matrix(~treat + batch)
+Next we adjust (deconfound) for categorized age. We find two significant results:
+```{r}
+dx_age <- phyloseq_to_deseq2(vm.pseq, ~ study_condition + age_category)
+dx_age <- DESeq(dx_age, test="Wald", fitType="parametric")
+res = results(dx_age, cooksCutoff = FALSE, contrast=c("study_condition", "CRC", "control"))
+alpha = 0.10
+sigtab = res[which(res$padj < alpha), ]
+sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(vm.pseq)[rownames(sigtab), ], "matrix"))
+head(sigtab)
 ```
 
-Then fit the model either in edgeR:
-```{r, eval = FALSE}
-fit <- glmQLFit(y, design)
-```
-
-Or in limma:
-```{r, eval = FALSE}
-fit <- lmFit(y, design)
+```{r}
+dx_age_gender <- phyloseq_to_deseq2(vm.pseq, ~ study_condition + age_category + gender)
+dx_age_gender <- DESeq(dx_age_gender, test="Wald", fitType="parametric")
+res = results(dx_age_gender, cooksCutoff = FALSE, contrast=c("study_condition", "CRC", "control"))
+alpha = 0.10
+sigtab = res[which(res$padj < alpha), ]
+sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(vm.pseq)[rownames(sigtab), ], "matrix"))
+head(sigtab)
 ```
 
 As mentioned in the confounding section, estimates obtained for the relationship between the exposure and the outcome have been adjusted for the included confounders (deconfounded). This means that the observed estimate is an averaged effect size across strata of the confounder(s).
