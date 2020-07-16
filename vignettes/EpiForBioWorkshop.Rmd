@@ -265,6 +265,33 @@ Another option for making causal diagrams is ggdag which can accept daggity obje
 ```{r}
 ggdag_adjustment_set(g1, "X", "Y")
 ```
+### DESeq2
+DESeq2 uses negative binomial regression. As such, it allows you to deconfound by including the confounder as a variable in the design statement:
+```{r, eval = FALSE}
+ddsSE <- DESeqDataSet(se, design = ~ exposure + confounder1 + confounder2)
+ddsSE
+```
+
+### edgeR and limma
+You can use `model.matrix()` to specify the exposure and confounders:
+```{r, eval = FALSE}
+batch <- factor(ds$Batch)
+treat <- factor(ds$tx)
+y <- factor(ds$surv)
+design <- model.matrix(~treat + batch)
+```
+
+Then fit the model either in edgeR:
+```{r, eval = FALSE}
+fit <- glmQLFit(y, design)
+```
+
+Or in limma:
+```{r, eval = FALSE}
+fit <- lmFit(y, design)
+```
+
+As mentioned in the confounding section, estimates obtained for the relationship between the exposure and the outcome have been adjusted for the included confounders (deconfounded). This means that the observed estimate is an averaged effect size across strata of the confounder(s).
 
 
 
