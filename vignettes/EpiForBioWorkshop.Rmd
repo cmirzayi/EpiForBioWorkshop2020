@@ -351,13 +351,17 @@ plot(graphLayout(ex1))
 3. One important subject that I did not touch on in this workshop was generalizability or transportability of causal findings (applying the results to an external population). What issues might arise when doing so? How can a DAG be used to resolve issues of generalizability and transportability?
 
 ## Conclusions
-Unfortunately there's no silver bullet for confounding or bias in R or Bioconductor. Instead, we as researchers must carefully consider possible sources of bias--ideally as we begin designing the study. DAGs are helpful in providing a clear visualization of the hypothesized causal mechanism and identifying potential confounders.
+Unfortunately there's no silver bullet for confounding or bias in R or Bioconductor. Instead, we as researchers must carefully consider possible sources of bias--ideally as we begin designing the study. DAGs are helpful in providing a clear visualization of the hypothesized causal mechanism and identifying potential confounders. As Hernan says, "Draw your assumptions before you draw your conclusions."
 
 Unmeasured confounding presents a particularly difficult problem for causal inference. Because the confounder was not measured, we cannot easily deconfound for it.
 
 It is important for us to remember that the definition of a cause is rooted in the counterfactual: we need to find a way to come as close as possible to observing what would have happened if a participant's exposure status had been different.
 
-## Further Reading
+## Further Reading/Materials
+
+This has been a basic primer on causal inference but if you'd like to learn more:
+
 - Pearl and Mackenzie *Book of Why: The New Science of Causal Effect* (easy summer beach read!)
 - Hernan and Robins *Causal Inference* available free online: https://www.hsph.harvard.edu/miguel-hernan/causal-inference-book/
 - Pearl *Causality: Models, Reasoning, and Inference*
+- Hernan's edX course available free online: https://www.edx.org/course/causal-diagrams-draw-your-assumptions-before-your
