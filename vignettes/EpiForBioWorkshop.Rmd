@@ -259,11 +259,34 @@ for( n in names(g1) ){
 }
 ```
 
+### ggdag
+Another option for making causal diagrams is ggdag which can accept daggity objects and plots DAGs using ggplot2.
+
+```{r}
+ggdag_adjustment_set(g1, "X", "Y")
+```
+
+
 
 ## Example in curatedMetagenomicData
-For this example, we use the VogtmannE 2016 dataset in cMD. The dataset has 52 cases of colorectal cancer and 58 controls.
+Step 1: Draw our assumptions. For this example, we use the VogtmannE 2016 dataset in cMD. The dataset has 52 cases of colorectal cancer and 58 controls. First, let's create a causal diagram for this relationship.
 
-First, download the data, extract the expressionset, and only take responses for which we have a value for study condition.
+```{r}
+v_dag <- dagitty( "dag {
+  colorectal_cancer -> altered_microbiome
+  colorectal_cancer <- age -> altered_microbiome
+  colorectal_cancer <- gender -> altered_microbiome
+}")
+ggdag(v_dag)+theme_dag()+theme_dag_gray()
+```
+
+What do we need to adjust for?
+```{r}
+ggdag_adjustment_set(v_dag, exposure = "colorectal_cancer", outcome = "altered_microbiome")+theme_dag_gray()
+```
+
+
+Download the data, extract the expressionset, and only take responses for which we have a value for study condition.
 ```{r}
 vogtmann <- curatedMetagenomicData("VogtmannE_2016.metaphlan_bugs_list.stool", dryrun = FALSE)
 vm.eset <-vogtmann[[1]]
@@ -294,6 +317,7 @@ sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(vm.pseq)[rownames(sigtab),
 head(sigtab)
 ```
 
+Finally we add in gender. Again observing two significant results.
 ```{r}
 dx_age_gender <- phyloseq_to_deseq2(vm.pseq, ~ study_condition + age_category + gender)
 dx_age_gender <- DESeq(dx_age_gender, test="Wald", fitType="parametric")
