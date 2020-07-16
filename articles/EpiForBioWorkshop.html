@@ -62,9 +62,6 @@
 <li>
       <a href="../articles/EpiForBioWorkshop.html">UNKNOWN TITLE</a>
     </li>
-    <li>
-      <a href="../articles/HOWTO_BUILD_WORKSHOP.html">How To Build A Workshop Package</a>
-    </li>
   </ul>
 </li>
       </ul>
@@ -107,110 +104,21 @@
 <p>Chloe Mirzayi, <a href="mailto:cmirzayi@gmail.com" class="email">cmirzayi@gmail.com</a></p>
 <p>Levi Waldron, <a href="mailto:levi.waldron@sph.cuny.edu" class="email">levi.waldron@sph.cuny.edu</a></p>
 <p>CUNY School of Public Health, 55 W 125th St, New York, NY 111027</p>
-</div>
-<div id="workshop-description" class="section level2">
-<h2 class="hasAnchor">
-<a href="#workshop-description" class="anchor"></a>Workshop Description</h2>
-<p>Concepts of causal inference in epidemiology have important ramifications for studies across bioinformatics and other fields of health research. In this workshop, we introduce basic concepts of epidemiology, study design, and causal inference for bioinformaticians. Emphasis is placed on addressing bias and confounding as common threats to assessing a causal pathway in a variety of study design types and when using common forms of analyses such as GWAS and survival analysis. Workshop participants will have the opportunity to create their own structural causal models (DAGs) and use this model to determine how to assess an estimated causal effect. Examples using DESeq2, edgeR, and limma will be used to show how multivariable models can be fitted depending on the hypothesized causal relationship.</p>
-<div id="pre-requisites" class="section level3">
-<h3 class="hasAnchor">
-<a href="#pre-requisites" class="anchor"></a>Pre-requisites</h3>
-<ul>
-<li>Basic knowledge of R syntax</li>
-<li>Familiarity with regression</li>
-</ul>
-</div>
-<div id="workshop-participation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#workshop-participation" class="anchor"></a>Workshop Participation</h3>
-<p>Students will have the opportunity to solve toy problems and execute example code in R.</p>
-</div>
-<div id="r-bioconductor-packages-used" class="section level3">
-<h3 class="hasAnchor">
-<a href="#r-bioconductor-packages-used" class="anchor"></a>R / Bioconductor packages used</h3>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw">if</span> (!<span class="fu"><a href="https://rdrr.io/r/base/ns-load.html">requireNamespace</a></span>(<span class="st">"BiocManager"</span>, <span class="kw">quietly</span> <span class="kw">=</span> <span class="fl">TRUE</span>))
-    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"BiocManager"</span>)
-<span class="co">## Bioconductor 3.9 Stable Release</span>
-<span class="kw pkg">BiocManager</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/BiocManager/man/install.html">install</a></span>(<span class="kw">version</span> <span class="kw">=</span> <span class="st">"3.9"</span>)</pre></body></html></div>
-<ul>
-<li><a href="https://cran.r-project.org/web/packages/dagitty/index.html">dagitty</a></li>
-<li><a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a></li>
-<li><a href="https://bioconductor.org/packages/release/bioc/html/edgeR.html">edgeR</a></li>
-<li><a href="https://bioconductor.org/packages/release/bioc/html/limma.html">limma</a></li>
-</ul>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dagitty</span>)
+<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">curatedMetagenomicData</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">dagitty</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">DESeq2</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">edgeR</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">limma</span>)</pre></body></html></div>
-</div>
-<div id="time-outline" class="section level3">
-<h3 class="hasAnchor">
-<a href="#time-outline" class="anchor"></a>Time outline</h3>
-<table class="table">
-<thead><tr class="header">
-<th>Activity</th>
-<th>Time</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>Counterfactuals</td>
-<td>15m</td>
-</tr>
-<tr class="even">
-<td>Causal Inference</td>
-<td>10m</td>
-</tr>
-<tr class="odd">
-<td>Bias and Confounding</td>
-<td>10m</td>
-</tr>
-<tr class="even">
-<td>Causal Inference in R</td>
-<td>10m</td>
-</tr>
-<tr class="odd">
-<td>Toy Problems</td>
-<td>15m</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-<div id="workshop-goals-and-objectives" class="section level2">
-<h2 class="hasAnchor">
-<a href="#workshop-goals-and-objectives" class="anchor"></a>Workshop goals and objectives</h2>
-<div id="learning-goals" class="section level3">
-<h3 class="hasAnchor">
-<a href="#learning-goals" class="anchor"></a>Learning goals</h3>
-<ul>
-<li>Describe the differences in common experimental and observational study designs</li>
-<li>Apply concepts of study design to common analyses in bioinformatics such as GWAS and survival analysis</li>
-<li>Understand key concepts of epidemiology such as causal inference, confounders, colliders, mediators, counterfactuals, and study designs</li>
-<li>Develop a structural causal diagram/directed acyclic graph (DAG) of causal relationships and assess pathways of interest</li>
-<li>Recognize the limitations and assumptions of multivariable regression in observational studies, and how this affects common analyses such as DESeq2, edgeR, and limma</li>
-</ul>
-</div>
-<div id="learning-objectives" class="section level3">
-<h3 class="hasAnchor">
-<a href="#learning-objectives" class="anchor"></a>Learning objectives</h3>
-<ul>
-<li>Assess a study design in terms of causal inference</li>
-<li>Learn about path blocking to prevent confounding</li>
-<li>Create a DAG in R using daggity</li>
-<li>Identify situations when multivariate adjustment for variables is inappropriate</li>
-<li>Select the correct model formula/matrix in DESeq2, edgeR, or limma to deconfound</li>
-</ul>
-</div>
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">phyloseq</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggdag</span>)</pre></body></html></div>
 </div>
 <div id="introduction-just-what-is-a-cause-anyway" class="section level2">
 <h2 class="hasAnchor">
 <a href="#introduction-just-what-is-a-cause-anyway" class="anchor"></a>Introduction: Just what is a cause anyway?</h2>
-<p>Requisite boring dictionary definition:</p>
+<p>Dictionary definition</p>
 <blockquote>
 <p>something that brings about an effect or a result (Merriam-Webster)</p>
 </blockquote>
 <p>This doesn’t tell us much though in terms of identifying a cause. How do we know our potential cause brought about an effect or a result? Perhaps it preceded the effect of interest. However, it could still just be a coincidence. Perhaps there is a lurking second cause that causes both our potential cause and the observed effect.</p>
-<p>Despite this, I think humans (and animals) tend to have a relatively intuitive understanding of causation when we observe it directly. When I burn my finger while cooking, I know what caused it–my finger coming into contact with a hot stove. I could also trace the causal pathway backward and identify what caused my finger to come into contact with the hot stove in the first place–such as my motivation to cook dinner or me being distracted by the antics of my cat.</p>
+<p>Despite this, humans (and animals) tend to have a relatively intuitive understanding of causation when we observe it directly. When I burn my finger while cooking, I know what caused it–my finger coming into contact with a hot stove. I could also trace the causal pathway backward and identify what caused my finger to come into contact with the hot stove in the first place–such as my motivation to cook dinner or me being distracted by the antics of my cat.</p>
 <p><strong>Example:</strong> My cat, who I adopted in 2017, has quickly learned that jumping on my kitchen table while I’m eating results in him getting a spritz of water with a spray bottle–but only if the spray bottle is within reach. <strong>What potential causal variables could my cat be considering when he decides to jump on the table?</strong></p>
 </div>
 <div id="the-counterfactual-definition-of-a-cause" class="section level2">
@@ -224,8 +132,8 @@
 <a href="#example-a-dog-and-an-ambulance" class="anchor"></a>Example: A dog and an ambulance</h3>
 <p>An ambulance drives by a house with its sirens on. A dog in the house barks. We can ask the causal question in a straightforward way: <strong>Did the ambulance driving by the house cause the dog to bark?</strong></p>
 <p>Alternatively, we can rephrase the question in terms of a counterfactual: Would the dog have barked if the ambulance had not driven by the house? We can visualize the relationship using a causal diagram also called a directed acyclic graph (DAG).</p>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-3-1.png" width="288"></p>
-<p>This diagram depicts the cause or exposure (the ambulance) and the effect or the outcome (the dog barking) with an arrow indicating the direction of the causal relationship. In contrast to a diagram showing a statistical relationship, causal diagrams must state a directional relationship.</p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-2-1.png" width="288"></p>
+<p>This diagram depicts the cause or exposure (the ambulance) and the effect or the outcome (the dog barking) with an arrow indicating the direction of the causal relationship. In contrast to a diagram showing a statistical relationship, causal diagrams must state a directional relationship because we are theorizing that one variable causes another.</p>
 <p>This is the simplest form of a causal diagram. If we were to statistically model the effect for this relationship using regression, a simple two-variable model containing the exposure and the outcome would give us a correct, unbiased estimate of the actual strength of the cause on the effect. However, we are rarely that lucky. A common source of bias is confounding.</p>
 </div>
 </div>
@@ -242,8 +150,8 @@
 <li>The confounder is not a mediator (i.e. it is not present on the causal pathway between the exposure and the outcome)</li>
 </ol>
 <p>Returning to our example, the relationship between the ambulance and the barking dog could be confounded by a third variable: a nearby car crash. Perhaps this car crash is what started the dog barking before the ambulance even arrived, but the ambulance caused the dog to bark even more.</p>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-4-1.png" width="288"></p>
-<p>We can “deconfound” the effect of interest by controlling for the confounder. The old-fashioned way of doing this is to manually stratify your data by levels of the confounder. Then you calculate an effect size for each stratum. In a modern regression model, we can include the confounder in our model and it is controlled for. We are effectively stratifying the effect across different levels of the confounder then taking the weighted average across strata to get an effect size.</p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-3-1.png" width="288"> The pathway between the exposure and the outcome through the confounder is called a “backdoor pathway” and it can bias the relationship between the exposure and the outcome you observe. In this situation, we might observe barking and conclude that it occurred due to the ambulance when in fact it was due to the car crash. Or we might conclude that the volume of the barking caused by the ambulance alone is much greater than it actually is due to the combined effect of both the car crash and the ambulance.</p>
+<p>We can “deconfound” the effect of interest by controlling for the confounder. The old-fashioned way of doing this is to manually stratify your data by levels of the confounder. Then you calculate an effect size for each stratum. In a modern regression model, we can include the confounder as an independent variable in our model and it is controlled for. When we include the confounder as a variable in a regression model, we are effectively stratifying the effect across different levels of the confounder then taking the weighted average across strata to get an effect size.</p>
 </div>
 <div id="colliders" class="section level3">
 <h3 class="hasAnchor">
@@ -254,23 +162,23 @@
 <li>The exposure causes the collider</li>
 <li>The collider is not a mediator</li>
 </ol>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-5-1.png" width="288"></p>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-6-1.png" width="768"></p>
-<p>Adjusting for a collider as one would for a confounder can create bias. In effect by adjusting for a collider, a backdoor pathway is created between the exposure and the outcome through the collider. So what’s the proper way of dealing with colliders? Ignoring them! Hypothesized colliders should not be adjusted for or included in models.</p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-4-1.png" width="288"></p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-5-1.png" width="768"></p>
+<p>Adjusting for a collider as one would for a confounder can create bias. In effect by adjusting for a collider, a backdoor pathway is opened between the exposure and the outcome through the collider. So what’s the proper way of dealing with colliders? Ignoring them! Hypothesized colliders should not be adjusted for or included in models.</p>
 <div id="side-note-on-pathways" class="section level4">
 <h4 class="hasAnchor">
 <a href="#side-note-on-pathways" class="anchor"></a>Side note on pathways</h4>
 <p>In a DAG, a pathway is considered blocked: - If there are two arrows pointing into each other along the path (as in the case of a collider) - If you have deconfounded (controlled, stratified, adjusted) for a variable on the pathway</p>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 </div>
 </div>
 <div id="selection-bias" class="section level3">
 <h3 class="hasAnchor">
 <a href="#selection-bias" class="anchor"></a>Selection bias</h3>
-<p>A final major issue of causal inference is selection bias. This arises when selection is dependent on the exposure and the outcome in the study:</p>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-8-1.png" width="288"></p>
+<p>Another major issue of causal inference is selection bias. This arises when selection is dependent on the exposure and the outcome in the study:</p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-7-1.png" width="288"></p>
 <p>As can be seen from the DAG above, selection bias is a collider. In this case, the study is conditioned on the collider by the act of selection for the study. As a result, the study is biased. One particularly memorable way to think of selection bias is as the “already dead” problem. People who have already died of the outcome are not alive to be in the study. These people may have a more aggressive or serious form of the outcome and not including them masks some of the causal relationship.</p>
-<p>A common source of selection bias is loss to follow-up. In survival analysis in particular this can be important as the people who are lost may differ in important ways from those who completed the study. Unfortunately because these people were lost, it is often difficult to assess how they differed from those who were not lost.</p>
+<p>A common source of selection bias is loss to follow-up in many studies. In survival analysis in particular this can be important as the people who are lost may differ in important ways from those who completed the study. Unfortunately because these people were lost, it is often difficult to assess how they differed from those who were not lost.</p>
 </div>
 </div>
 <div id="study-designs" class="section level2">
@@ -293,8 +201,9 @@
 <li>Attempts to mimic an RCT using a source of pseudorandomization</li>
 </ul>
 <p>Consider the DAG for an RCT:</p>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-9-1.png" width="480"></p>
-<p>In IV/MR analysis the coin flip is replaced with a source of randomization such as genetic variation: <img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-10-1.png" width="480"></p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-8-1.png" width="480"></p>
+<p>In IV/MR analysis the coin flip is replaced with a source of randomization such as genetic variation: <img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-9-1.png" width="480"></p>
+<p>Researchers have used a variety of factors as sources of pseudorandomness in IV studies: - Before and after implementation of a new government policy - Distance from a medical center -</p>
 </div>
 </div>
 <div id="cohort-studies" class="section level3">
@@ -334,15 +243,15 @@
 <h3 class="hasAnchor">
 <a href="#dagitty" class="anchor"></a>Dagitty</h3>
 <p>Dagitty allows for creating causal diagrams, but also gives you more information including what variables to adjust for in complicated causal models.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">g1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html">dagitty</a></span>( <span class="st">"dag {
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">g1</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html">dagitty</a></span>( <span class="st">"dag {
     W1 -&gt; Z1 -&gt; X -&gt; Y
     Z1 &lt;- V -&gt; Z2
     W2 -&gt; Z2 -&gt; Y
     X &lt;- W1 -&gt; W2 -&gt; Y
 }"</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/graphLayout.html">graphLayout</a></span>(<span class="no">g1</span>))</pre></body></html></div>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="kw">for</span>( <span class="no">n</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">g1</span>) ){
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="kw">for</span>( <span class="no">n</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span>(<span class="no">g1</span>) ){
     <span class="kw">for</span>( <span class="no">m</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/sets.html">setdiff</a></span>( <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/AncestralRelations.html">descendants</a></span>( <span class="no">g1</span>, <span class="no">n</span> ), <span class="no">n</span> ) ){
         <span class="no">a</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/adjustmentSets.html">adjustmentSets</a></span>( <span class="no">g1</span>, <span class="no">n</span>, <span class="no">m</span> )
         <span class="kw">if</span>( <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span>(<span class="no">a</span>) <span class="kw">&gt;</span> <span class="fl">0</span> ){
@@ -390,27 +299,173 @@
 ##  *  { W1, W2, Z1 }
 ##  *  { V, W2 }</code></pre>
 </div>
-<div id="deseq2" class="section level3">
-<h3 class="hasAnchor">
-<a href="#deseq2" class="anchor"></a>DESeq2</h3>
-<p>DESeq2 uses negative binomial regression. As such, it allows you to deconfound by including the confounder as a variable in the design statement:</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">ddsSE</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeqDataSet.html">DESeqDataSet</a></span>(<span class="no">se</span>, <span class="kw">design</span> <span class="kw">=</span> ~ <span class="no">exposure</span> + <span class="no">confounder1</span> + <span class="no">confounder2</span>)
-<span class="no">ddsSE</span></pre></body></html></div>
 </div>
-<div id="edger-and-limma" class="section level3">
-<h3 class="hasAnchor">
-<a href="#edger-and-limma" class="anchor"></a>edgeR and limma</h3>
-<p>You can use <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> to specify the exposure and confounders:</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">batch</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">ds</span>$<span class="no">Batch</span>)
-<span class="no">treat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">ds</span>$<span class="no">tx</span>)
-<span class="no">y</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">ds</span>$<span class="no">surv</span>)
-<span class="no">design</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(~<span class="no">treat</span> + <span class="no">batch</span>)</pre></body></html></div>
-<p>Then fit the model either in edgeR:</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">fit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/edgeR/man/glmQLFTest.html">glmQLFit</a></span>(<span class="no">y</span>, <span class="no">design</span>)</pre></body></html></div>
-<p>Or in limma:</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">fit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/limma/man/lmFit.html">lmFit</a></span>(<span class="no">y</span>, <span class="no">design</span>)</pre></body></html></div>
+<div id="example-in-curatedmetagenomicdata" class="section level2">
+<h2 class="hasAnchor">
+<a href="#example-in-curatedmetagenomicdata" class="anchor"></a>Example in curatedMetagenomicData</h2>
+<p>For this example, we use the VogtmannE 2016 dataset in cMD. The dataset has 52 cases of colorectal cancer and 58 controls.</p>
+<p>First, download the data, extract the expressionset, and only take responses for which we have a value for study condition.</p>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">vogtmann</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/curatedMetagenomicData.html">curatedMetagenomicData</a></span>(<span class="st">"VogtmannE_2016.metaphlan_bugs_list.stool"</span>, <span class="kw">dryrun</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<pre><code>## Working on VogtmannE_2016.metaphlan_bugs_list.stool</code></pre>
+<pre><code>## using temporary cache /tmp/Rtmp7MmAsT/BiocFileCache</code></pre>
+<pre><code>## snapshotDate(): 2020-07-10</code></pre>
+<pre><code>## see ?curatedMetagenomicData and browseVignettes('curatedMetagenomicData') for documentation</code></pre>
+<pre><code>## downloading 1 resources</code></pre>
+<pre><code>## retrieving 1 resource</code></pre>
+<pre><code>## loading from cache</code></pre>
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">vm.eset</span> <span class="kw">&lt;-</span><span class="no">vogtmann</span><span class="kw">[[</span><span class="fl">1</span>]]
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">vm.eset</span>$<span class="no">study_condition</span>, <span class="kw">useNA</span><span class="kw">=</span><span class="st">"ifany"</span>)</pre></body></html></div>
+<pre><code>## 
+## control     CRC    &lt;NA&gt; 
+##      52      52       6</code></pre>
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="no">vm.sub</span> <span class="kw">&lt;-</span> <span class="no">vm.eset</span>[,!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="no">vm.eset</span>$<span class="no">study_condition</span>)]
+<span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">vm.sub</span>$<span class="no">study_condition</span>, <span class="kw">useNA</span><span class="kw">=</span><span class="st">"ifany"</span>)</pre></body></html></div>
+<pre><code>## 
+## control     CRC 
+##      52      52</code></pre>
+<p>First we conduct a basic analysis to examine whether there are any statistically significant differences in taxa of microbiota by study condition. We use a forgiving alpha of 0.10 for adjusted p-values. We find 5 significant taxa in this crude analysis.</p>
+<div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="no">vm.pseq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/ExpressionSet2phyloseq.html">ExpressionSet2phyloseq</a></span>(<span class="no">vm.sub</span>)</pre></body></html></div>
+<pre><code>## Warning: `data_frame()` is deprecated as of tibble 1.1.0.
+## Please use `tibble()` instead.
+## This warning is displayed once every 8 hours.
+## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
+<div class="sourceCode" id="cb19"><html><body><pre class="r"><span class="no">dx_only</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span>)</pre></body></html></div>
+<pre><code>## converting counts to integer mode</code></pre>
+<pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
+## design formula are characters, converting to factors</code></pre>
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">dx_only</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_only</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
+<pre><code>## estimating size factors</code></pre>
+<pre><code>## estimating dispersions</code></pre>
+<pre><code>## gene-wise dispersion estimates</code></pre>
+<pre><code>## mean-dispersion relationship</code></pre>
+<pre><code>## final dispersion estimates</code></pre>
+<pre><code>## fitting model and testing</code></pre>
+<pre><code>## -- replacing outliers and refitting for 58 genes
+## -- DESeq argument 'minReplicatesForReplace' = 7 
+## -- original counts are preserved in counts(dds)</code></pre>
+<pre><code>## estimating dispersions</code></pre>
+<pre><code>## fitting model and testing</code></pre>
+<div class="sourceCode" id="cb32"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_only</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
+<span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
+<span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">sigtab</span>)</pre></body></html></div>
+<pre><code>##                                      baseMean log2FoldChange     lfcSE     stat
+## g__Escherichia                       1.160319       3.131873 0.8680873 3.607785
+## s__Ruminococcus_torques              2.057123       1.221872 0.3181531 3.840515
+## s__Escherichia_coli                  1.021863       3.114437 0.8976217 3.469654
+## t__Ruminococcus_torques_unclassified 1.317457       1.711670 0.4640449 3.688588
+## t__Escherichia_coli_unclassified     1.021863       3.114437 0.8976217 3.469654
+##                                            pvalue       padj  Kingdom
+## g__Escherichia                       0.0003088219 0.05507325 Bacteria
+## s__Ruminococcus_torques              0.0001227764 0.05507325 Bacteria
+## s__Escherichia_coli                  0.0005211292 0.05576082 Bacteria
+## t__Ruminococcus_torques_unclassified 0.0002255023 0.05507325 Bacteria
+## t__Escherichia_coli_unclassified     0.0005211292 0.05576082 Bacteria
+##                                              Phylum               Class
+## g__Escherichia                       Proteobacteria Gammaproteobacteria
+## s__Ruminococcus_torques                  Firmicutes          Clostridia
+## s__Escherichia_coli                  Proteobacteria Gammaproteobacteria
+## t__Ruminococcus_torques_unclassified     Firmicutes          Clostridia
+## t__Escherichia_coli_unclassified     Proteobacteria Gammaproteobacteria
+##                                                  Order             Family
+## g__Escherichia                       Enterobacteriales Enterobacteriaceae
+## s__Ruminococcus_torques                  Clostridiales    Lachnospiraceae
+## s__Escherichia_coli                  Enterobacteriales Enterobacteriaceae
+## t__Ruminococcus_torques_unclassified     Clostridiales    Lachnospiraceae
+## t__Escherichia_coli_unclassified     Enterobacteriales Enterobacteriaceae
+##                                            Genus              Species
+## g__Escherichia                       Escherichia                 &lt;NA&gt;
+## s__Ruminococcus_torques                  Blautia Ruminococcus_torques
+## s__Escherichia_coli                  Escherichia     Escherichia_coli
+## t__Ruminococcus_torques_unclassified     Blautia Ruminococcus_torques
+## t__Escherichia_coli_unclassified     Escherichia     Escherichia_coli
+##                                                                 Strain
+## g__Escherichia                                                    &lt;NA&gt;
+## s__Ruminococcus_torques                                           &lt;NA&gt;
+## s__Escherichia_coli                                               &lt;NA&gt;
+## t__Ruminococcus_torques_unclassified Ruminococcus_torques_unclassified
+## t__Escherichia_coli_unclassified         Escherichia_coli_unclassified</code></pre>
+<p>Next we adjust (deconfound) for categorized age. We find two significant results:</p>
+<div class="sourceCode" id="cb34"><html><body><pre class="r"><span class="no">dx_age</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span> + <span class="no">age_category</span>)</pre></body></html></div>
+<pre><code>## converting counts to integer mode</code></pre>
+<pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
+## design formula are characters, converting to factors</code></pre>
+<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="no">dx_age</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_age</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
+<pre><code>## estimating size factors</code></pre>
+<pre><code>## estimating dispersions</code></pre>
+<pre><code>## gene-wise dispersion estimates</code></pre>
+<pre><code>## mean-dispersion relationship</code></pre>
+<pre><code>## final dispersion estimates</code></pre>
+<pre><code>## fitting model and testing</code></pre>
+<pre><code>## -- replacing outliers and refitting for 60 genes
+## -- DESeq argument 'minReplicatesForReplace' = 7 
+## -- original counts are preserved in counts(dds)</code></pre>
+<pre><code>## estimating dispersions</code></pre>
+<pre><code>## fitting model and testing</code></pre>
+<div class="sourceCode" id="cb47"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_age</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">contrast</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"study_condition"</span>, <span class="st">"CRC"</span>, <span class="st">"control"</span>))
+<span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
+<span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
+<span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">sigtab</span>)</pre></body></html></div>
+<pre><code>##                                      baseMean log2FoldChange     lfcSE     stat
+## s__Ruminococcus_torques              2.057123       1.225518 0.3199339 3.830534
+## t__Ruminococcus_torques_unclassified 1.317457       1.706224 0.4661006 3.660634
+##                                            pvalue       padj  Kingdom
+## s__Ruminococcus_torques              0.0001278654 0.06730097 Bacteria
+## t__Ruminococcus_torques_unclassified 0.0002515924 0.06730097 Bacteria
+##                                          Phylum      Class         Order
+## s__Ruminococcus_torques              Firmicutes Clostridia Clostridiales
+## t__Ruminococcus_torques_unclassified Firmicutes Clostridia Clostridiales
+##                                               Family   Genus
+## s__Ruminococcus_torques              Lachnospiraceae Blautia
+## t__Ruminococcus_torques_unclassified Lachnospiraceae Blautia
+##                                                   Species
+## s__Ruminococcus_torques              Ruminococcus_torques
+## t__Ruminococcus_torques_unclassified Ruminococcus_torques
+##                                                                 Strain
+## s__Ruminococcus_torques                                           &lt;NA&gt;
+## t__Ruminococcus_torques_unclassified Ruminococcus_torques_unclassified</code></pre>
+<div class="sourceCode" id="cb49"><html><body><pre class="r"><span class="no">dx_age_gender</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span> + <span class="no">age_category</span> + <span class="no">gender</span>)</pre></body></html></div>
+<pre><code>## converting counts to integer mode</code></pre>
+<pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
+## design formula are characters, converting to factors</code></pre>
+<div class="sourceCode" id="cb52"><html><body><pre class="r"><span class="no">dx_age_gender</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_age_gender</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
+<pre><code>## estimating size factors</code></pre>
+<pre><code>## estimating dispersions</code></pre>
+<pre><code>## gene-wise dispersion estimates</code></pre>
+<pre><code>## mean-dispersion relationship</code></pre>
+<pre><code>## final dispersion estimates</code></pre>
+<pre><code>## fitting model and testing</code></pre>
+<pre><code>## -- replacing outliers and refitting for 45 genes
+## -- DESeq argument 'minReplicatesForReplace' = 7 
+## -- original counts are preserved in counts(dds)</code></pre>
+<pre><code>## estimating dispersions</code></pre>
+<pre><code>## fitting model and testing</code></pre>
+<div class="sourceCode" id="cb62"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_age_gender</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">contrast</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"study_condition"</span>, <span class="st">"CRC"</span>, <span class="st">"control"</span>))
+<span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
+<span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
+<span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">sigtab</span>)</pre></body></html></div>
+<pre><code>##                                      baseMean log2FoldChange     lfcSE     stat
+## s__Ruminococcus_torques              2.057123        1.22658 0.3202308 3.830298
+## t__Ruminococcus_torques_unclassified 1.317457        1.73073 0.4655552 3.717562
+##                                            pvalue       padj  Kingdom
+## s__Ruminococcus_torques              0.0001279881 0.05380886 Bacteria
+## t__Ruminococcus_torques_unclassified 0.0002011546 0.05380886 Bacteria
+##                                          Phylum      Class         Order
+## s__Ruminococcus_torques              Firmicutes Clostridia Clostridiales
+## t__Ruminococcus_torques_unclassified Firmicutes Clostridia Clostridiales
+##                                               Family   Genus
+## s__Ruminococcus_torques              Lachnospiraceae Blautia
+## t__Ruminococcus_torques_unclassified Lachnospiraceae Blautia
+##                                                   Species
+## s__Ruminococcus_torques              Ruminococcus_torques
+## t__Ruminococcus_torques_unclassified Ruminococcus_torques
+##                                                                 Strain
+## s__Ruminococcus_torques                                           &lt;NA&gt;
+## t__Ruminococcus_torques_unclassified Ruminococcus_torques_unclassified</code></pre>
 <p>As mentioned in the confounding section, estimates obtained for the relationship between the exposure and the outcome have been adjusted for the included confounders (deconfounded). This means that the observed estimate is an averaged effect size across strata of the confounder(s).</p>
-</div>
 </div>
 <div id="toy-problems" class="section level2">
 <h2 class="hasAnchor">
@@ -418,7 +473,7 @@
 <ol style="list-style-type: decimal">
 <li>Consider the DAG below. What variables should you control for if you want to measure the effect of X on Y?</li>
 </ol>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Create your own DAG (of a causal relationship of interest to you) then identify what variables you would need to control for to measure the causal effect of interest.</li>
 <li>One important subject that I did not touch on in this workshop was generalizability or transportability of causal findings (applying the results to an external population). What issues might arise when doing so? How can a DAG be used to resolve issues of generalizability and transportability?</li>
