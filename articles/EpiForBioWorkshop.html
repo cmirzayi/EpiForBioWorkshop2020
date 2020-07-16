@@ -304,53 +304,69 @@
 <a href="#ggdag" class="anchor"></a>ggdag</h3>
 <p>Another option for making causal diagrams is ggdag which can accept daggity objects and plots DAGs using ggplot2.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/adjustment_sets.html">ggdag_adjustment_set</a></span>(<span class="no">g1</span>, <span class="st">"X"</span>, <span class="st">"Y"</span>)</pre></body></html></div>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-12-1.png" width="700"> ### DESeq2 DESeq2 uses negative binomial regression. As such, it allows you to deconfound by including the confounder as a variable in the design statement:</p>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">ddsSE</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeqDataSet.html">DESeqDataSet</a></span>(<span class="no">se</span>, <span class="kw">design</span> <span class="kw">=</span> ~ <span class="no">exposure</span> + <span class="no">confounder1</span> + <span class="no">confounder2</span>)
+<span class="no">ddsSE</span></pre></body></html></div>
+</div>
+<div id="edger-and-limma" class="section level3">
+<h3 class="hasAnchor">
+<a href="#edger-and-limma" class="anchor"></a>edgeR and limma</h3>
+<p>You can use <code><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix()</a></code> to specify the exposure and confounders:</p>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">batch</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">ds</span>$<span class="no">Batch</span>)
+<span class="no">treat</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">ds</span>$<span class="no">tx</span>)
+<span class="no">y</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">ds</span>$<span class="no">surv</span>)
+<span class="no">design</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/model.matrix.html">model.matrix</a></span>(~<span class="no">treat</span> + <span class="no">batch</span>)</pre></body></html></div>
+<p>Then fit the model either in edgeR:</p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">fit</span> <span class="kw">&lt;-</span> <span class="fu">glmQLFit</span>(<span class="no">y</span>, <span class="no">design</span>)</pre></body></html></div>
+<p>Or in limma:</p>
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">fit</span> <span class="kw">&lt;-</span> <span class="fu">lmFit</span>(<span class="no">y</span>, <span class="no">design</span>)</pre></body></html></div>
+<p>As mentioned in the confounding section, estimates obtained for the relationship between the exposure and the outcome have been adjusted for the included confounders (deconfounded). This means that the observed estimate is an averaged effect size across strata of the confounder(s).</p>
 </div>
 </div>
 <div id="example-in-curatedmetagenomicdata" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example-in-curatedmetagenomicdata" class="anchor"></a>Example in curatedMetagenomicData</h2>
 <p>Step 1: Draw our assumptions. For this example, we use the VogtmannE 2016 dataset in cMD. The dataset has 52 cases of colorectal cancer and 58 controls. First, let’s create a causal diagram for this relationship.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">v_dag</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html">dagitty</a></span>( <span class="st">"dag {
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">v_dag</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html">dagitty</a></span>( <span class="st">"dag {
   colorectal_cancer -&gt; altered_microbiome
   colorectal_cancer &lt;- age -&gt; altered_microbiome
   colorectal_cancer &lt;- gender -&gt; altered_microbiome
 }"</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/ggdag.html">ggdag</a></span>(<span class="no">v_dag</span>)+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_blank.html">theme_dag</a></span>()+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_grey.html">theme_dag_gray</a></span>()</pre></body></html></div>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 <p>What do we need to adjust for?</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/adjustment_sets.html">ggdag_adjustment_set</a></span>(<span class="no">v_dag</span>, <span class="kw">exposure</span> <span class="kw">=</span> <span class="st">"colorectal_cancer"</span>, <span class="kw">outcome</span> <span class="kw">=</span> <span class="st">"altered_microbiome"</span>)+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_grey.html">theme_dag_gray</a></span>()</pre></body></html></div>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/adjustment_sets.html">ggdag_adjustment_set</a></span>(<span class="no">v_dag</span>, <span class="kw">exposure</span> <span class="kw">=</span> <span class="st">"colorectal_cancer"</span>, <span class="kw">outcome</span> <span class="kw">=</span> <span class="st">"altered_microbiome"</span>)+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_grey.html">theme_dag_gray</a></span>()</pre></body></html></div>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 <p>Download the data, extract the expressionset, and only take responses for which we have a value for study condition.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">vogtmann</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/curatedMetagenomicData.html">curatedMetagenomicData</a></span>(<span class="st">"VogtmannE_2016.metaphlan_bugs_list.stool"</span>, <span class="kw">dryrun</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">vogtmann</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/curatedMetagenomicData.html">curatedMetagenomicData</a></span>(<span class="st">"VogtmannE_2016.metaphlan_bugs_list.stool"</span>, <span class="kw">dryrun</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <pre><code>## Working on VogtmannE_2016.metaphlan_bugs_list.stool</code></pre>
-<pre><code>## using temporary cache /tmp/Rtmp60zVKJ/BiocFileCache</code></pre>
+<pre><code>## using temporary cache /tmp/Rtmp5JhukZ/BiocFileCache</code></pre>
 <pre><code>## snapshotDate(): 2020-07-10</code></pre>
 <pre><code>## see ?curatedMetagenomicData and browseVignettes('curatedMetagenomicData') for documentation</code></pre>
 <pre><code>## downloading 1 resources</code></pre>
 <pre><code>## retrieving 1 resource</code></pre>
 <pre><code>## loading from cache</code></pre>
-<div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="no">vm.eset</span> <span class="kw">&lt;-</span><span class="no">vogtmann</span><span class="kw">[[</span><span class="fl">1</span>]]
+<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">vm.eset</span> <span class="kw">&lt;-</span><span class="no">vogtmann</span><span class="kw">[[</span><span class="fl">1</span>]]
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">vm.eset</span>$<span class="no">study_condition</span>, <span class="kw">useNA</span><span class="kw">=</span><span class="st">"ifany"</span>)</pre></body></html></div>
 <pre><code>## 
 ## control     CRC    &lt;NA&gt; 
 ##      52      52       6</code></pre>
-<div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="no">vm.sub</span> <span class="kw">&lt;-</span> <span class="no">vm.eset</span>[,!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="no">vm.eset</span>$<span class="no">study_condition</span>)]
+<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">vm.sub</span> <span class="kw">&lt;-</span> <span class="no">vm.eset</span>[,!<span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span>(<span class="no">vm.eset</span>$<span class="no">study_condition</span>)]
 <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span>(<span class="no">vm.sub</span>$<span class="no">study_condition</span>, <span class="kw">useNA</span><span class="kw">=</span><span class="st">"ifany"</span>)</pre></body></html></div>
 <pre><code>## 
 ## control     CRC 
 ##      52      52</code></pre>
 <p>First we conduct a basic analysis to examine whether there are any statistically significant differences in taxa of microbiota by study condition. We use a forgiving alpha of 0.10 for adjusted p-values. We find 5 significant taxa in this crude analysis.</p>
-<div class="sourceCode" id="cb20"><html><body><pre class="r"><span class="no">vm.pseq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/ExpressionSet2phyloseq.html">ExpressionSet2phyloseq</a></span>(<span class="no">vm.sub</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="no">vm.pseq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/ExpressionSet2phyloseq.html">ExpressionSet2phyloseq</a></span>(<span class="no">vm.sub</span>)</pre></body></html></div>
 <pre><code>## Warning: `data_frame()` is deprecated as of tibble 1.1.0.
 ## Please use `tibble()` instead.
 ## This warning is displayed once every 8 hours.
 ## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
-<div class="sourceCode" id="cb22"><html><body><pre class="r"><span class="no">dx_only</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">dx_only</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span>)</pre></body></html></div>
 <pre><code>## converting counts to integer mode</code></pre>
 <pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
 ## design formula are characters, converting to factors</code></pre>
-<div class="sourceCode" id="cb25"><html><body><pre class="r"><span class="no">dx_only</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_only</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="no">dx_only</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_only</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
 <pre><code>## estimating size factors</code></pre>
 <pre><code>## estimating dispersions</code></pre>
 <pre><code>## gene-wise dispersion estimates</code></pre>
@@ -362,7 +378,7 @@
 ## -- original counts are preserved in counts(dds)</code></pre>
 <pre><code>## estimating dispersions</code></pre>
 <pre><code>## fitting model and testing</code></pre>
-<div class="sourceCode" id="cb35"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_only</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
+<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_only</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
 <span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
 <span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
 <span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
@@ -404,11 +420,11 @@
 ## t__Ruminococcus_torques_unclassified Ruminococcus_torques_unclassified
 ## t__Escherichia_coli_unclassified         Escherichia_coli_unclassified</code></pre>
 <p>Next we adjust (deconfound) for categorized age. We find two significant results:</p>
-<div class="sourceCode" id="cb37"><html><body><pre class="r"><span class="no">dx_age</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span> + <span class="no">age_category</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="no">dx_age</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span> + <span class="no">age_category</span>)</pre></body></html></div>
 <pre><code>## converting counts to integer mode</code></pre>
 <pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
 ## design formula are characters, converting to factors</code></pre>
-<div class="sourceCode" id="cb40"><html><body><pre class="r"><span class="no">dx_age</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_age</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb44"><html><body><pre class="r"><span class="no">dx_age</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_age</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
 <pre><code>## estimating size factors</code></pre>
 <pre><code>## estimating dispersions</code></pre>
 <pre><code>## gene-wise dispersion estimates</code></pre>
@@ -420,7 +436,7 @@
 ## -- original counts are preserved in counts(dds)</code></pre>
 <pre><code>## estimating dispersions</code></pre>
 <pre><code>## fitting model and testing</code></pre>
-<div class="sourceCode" id="cb50"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_age</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">contrast</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"study_condition"</span>, <span class="st">"CRC"</span>, <span class="st">"control"</span>))
+<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_age</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">contrast</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"study_condition"</span>, <span class="st">"CRC"</span>, <span class="st">"control"</span>))
 <span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
 <span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
 <span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
@@ -444,11 +460,11 @@
 ## s__Ruminococcus_torques                                           &lt;NA&gt;
 ## t__Ruminococcus_torques_unclassified Ruminococcus_torques_unclassified</code></pre>
 <p>Finally we add in gender. Again observing two significant results.</p>
-<div class="sourceCode" id="cb52"><html><body><pre class="r"><span class="no">dx_age_gender</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span> + <span class="no">age_category</span> + <span class="no">gender</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb56"><html><body><pre class="r"><span class="no">dx_age_gender</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span> + <span class="no">age_category</span> + <span class="no">gender</span>)</pre></body></html></div>
 <pre><code>## converting counts to integer mode</code></pre>
 <pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
 ## design formula are characters, converting to factors</code></pre>
-<div class="sourceCode" id="cb55"><html><body><pre class="r"><span class="no">dx_age_gender</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_age_gender</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb59"><html><body><pre class="r"><span class="no">dx_age_gender</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_age_gender</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
 <pre><code>## estimating size factors</code></pre>
 <pre><code>## estimating dispersions</code></pre>
 <pre><code>## gene-wise dispersion estimates</code></pre>
@@ -460,7 +476,7 @@
 ## -- original counts are preserved in counts(dds)</code></pre>
 <pre><code>## estimating dispersions</code></pre>
 <pre><code>## fitting model and testing</code></pre>
-<div class="sourceCode" id="cb65"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_age_gender</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">contrast</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"study_condition"</span>, <span class="st">"CRC"</span>, <span class="st">"control"</span>))
+<div class="sourceCode" id="cb69"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_age_gender</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">contrast</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"study_condition"</span>, <span class="st">"CRC"</span>, <span class="st">"control"</span>))
 <span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
 <span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
 <span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
@@ -491,7 +507,7 @@
 <ol style="list-style-type: decimal">
 <li>Consider the DAG below. What variables should you control for if you want to measure the effect of X on Y?</li>
 </ol>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-23-1.png" width="700"></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Create your own DAG (of a causal relationship of interest to you) then identify what variables you would need to control for to measure the causal effect of interest.</li>
 <li>One important subject that I did not touch on in this workshop was generalizability or transportability of causal findings (applying the results to an external population). What issues might arise when doing so? How can a DAG be used to resolve issues of generalizability and transportability?</li>
