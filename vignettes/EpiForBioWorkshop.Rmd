@@ -37,7 +37,7 @@ Dictionary definition
 
 This doesn't tell us much though in terms of identifying a cause. How do we know our potential cause brought about an effect or a result? Perhaps it preceded the effect of interest. However, it could still just be a coincidence. Perhaps there is a lurking second cause that causes both our potential cause and the observed effect.
 
-Despite this, I think humans (and animals) tend to have a relatively intuitive understanding of causation when we observe it directly. When I burn my finger while cooking, I know what caused it--my finger coming into contact with a hot stove. I could  also trace the causal pathway backward and identify what caused my finger to come into contact with the hot stove in the first place--such as my motivation to cook dinner or me being distracted by the antics of my cat.
+Despite this, humans (and animals) tend to have a relatively intuitive understanding of causation when we observe it directly. When I burn my finger while cooking, I know what caused it--my finger coming into contact with a hot stove. I could also trace the causal pathway backward and identify what caused my finger to come into contact with the hot stove in the first place--such as my motivation to cook dinner or me being distracted by the antics of my cat.
 
 **Example:** My cat, who I adopted in 2017, has quickly learned that jumping on my kitchen table while I’m eating results in him getting a spritz of water with a spray bottle--but only if the spray bottle is within reach. **What potential causal variables could my cat be considering when he decides to jump on the table?**
 
@@ -63,7 +63,7 @@ coordinates(cd1) <- list(x=c(Ambulance=1, Dog_Barking=2),
 plot(cd1, height=1)
 ```
 
-This diagram depicts the cause or exposure (the ambulance) and the effect or the outcome (the dog barking) with an arrow indicating the direction of the causal relationship. In contrast to a diagram showing a statistical relationship, causal diagrams must state a directional relationship.
+This diagram depicts the cause or exposure (the ambulance) and the effect or the outcome (the dog barking) with an arrow indicating the direction of the causal relationship. In contrast to a diagram showing a statistical relationship, causal diagrams must state a directional relationship because we are theorizing that one variable causes another.
 
 This is the simplest form of a causal diagram. If we were to statistically model the effect for this relationship using regression, a simple two-variable model containing the exposure and the outcome would give us a correct, unbiased estimate of the actual strength of the cause on the effect. However, we are rarely that lucky. A common source of bias is confounding.
 
@@ -90,8 +90,9 @@ coordinates(cd2) <- list(x=c(Ambulance=1, Dog_Barking=3, Car_Crash=2),
                          y=c(Ambulance=0, Dog_Barking=0, Car_Crash=1))
 plot(cd2)
 ```
+The pathway between the exposure and the outcome through the confounder is called a "backdoor pathway" and it can bias the relationship between the exposure and the outcome you observe. In this situation, we might observe barking and conclude that it occurred due to the ambulance when in fact it was due to the car crash. Or we might conclude that the volume of the barking caused by the ambulance alone is much greater than it actually is due to the combined effect of both the car crash and the ambulance.
 
-We can "deconfound" the effect of interest by controlling for the confounder. The old-fashioned way of doing this is to manually stratify your data by levels of the confounder. Then you calculate an effect size for each stratum. In a modern regression model, we can include the confounder in our model and it is controlled for. We are effectively stratifying the effect across different levels of the confounder then taking the weighted average across strata to get an effect size.
+We can "deconfound" the effect of interest by controlling for the confounder. The old-fashioned way of doing this is to manually stratify your data by levels of the confounder. Then you calculate an effect size for each stratum. In a modern regression model, we can include the confounder as an independent variable in our model and it is controlled for. When we include the confounder as a variable in a regression model, we are effectively stratifying the effect across different levels of the confounder then taking the weighted average across strata to get an effect size.
 
 ### Colliders
 
@@ -119,7 +120,7 @@ plot(cd3)
 ```
 
 
-Adjusting for a collider as one would for a confounder can create bias. In effect by adjusting for a collider, a backdoor pathway is created between the exposure and the outcome through the collider. So what's the proper way of dealing with colliders? Ignoring them! Hypothesized colliders should not be adjusted for or included in models.
+Adjusting for a collider as one would for a confounder can create bias. In effect by adjusting for a collider, a backdoor pathway is opened between the exposure and the outcome through the collider. So what's the proper way of dealing with colliders? Ignoring them! Hypothesized colliders should not be adjusted for or included in models.
 
 #### Side note on pathways
 In a DAG, a pathway is considered blocked:
@@ -146,7 +147,7 @@ plot(sn2)
 ```
 
 ### Selection bias
-A final major issue of causal inference is selection bias. This arises when selection is dependent on the exposure and the outcome in the study:
+Another major issue of causal inference is selection bias. This arises when selection is dependent on the exposure and the outcome in the study:
 
 ```{r, echo = FALSE, fig.height=1.5, fig.width=3}
 cd4 <- dagitty( "dag {
@@ -161,7 +162,7 @@ plot(cd4)
 
 As can be seen from the DAG above, selection bias is a collider. In this case, the study is conditioned on the collider by the act of selection for the study. As a result, the study is biased. One particularly memorable way to think of selection bias is as the "already dead" problem. People who have already died of the outcome are not alive to be in the study. These people may have a more aggressive or serious form of the outcome and not including them masks some of the causal relationship.
 
-A common source of selection bias is loss to follow-up. In survival analysis in particular this can be important as the people who are lost may differ in important ways from those who completed the study. Unfortunately because these people were lost, it is often difficult to assess how they differed from those who were not lost.
+A common source of selection bias is loss to follow-up in many studies. In survival analysis in particular this can be important as the people who are lost may differ in important ways from those who completed the study. Unfortunately because these people were lost, it is often difficult to assess how they differed from those who were not lost.
 
 ## Study Designs
 
@@ -201,6 +202,11 @@ coordinates(mr) <- list(x=c(Genetic_Variation=1, Exposure=2, Outcome=3, C=2.5),
                          y=c(Genetic_Variation=0, Exposure=0, Outcome=0, C=1))
 plot(mr)
 ```
+
+Researchers have used a variety of factors as sources of pseudorandomness in IV studies:
+- Before and after implementation of a new government policy
+- Distance from a medical center
+- 
 
 ### Cohort Studies
 
