@@ -265,6 +265,7 @@ Another option for making causal diagrams is ggdag which can accept daggity obje
 ```{r}
 ggdag_adjustment_set(g1, "X", "Y")
 ```
+
 ### DESeq2
 DESeq2 uses negative binomial regression. As such, it allows you to deconfound by including the confounder as a variable in the design statement:
 ```{r, eval = FALSE}
@@ -300,16 +301,16 @@ Step 1: Draw our assumptions. For this example, we use the VogtmannE 2016 datase
 
 ```{r}
 v_dag <- dagitty( "dag {
-  colorectal_cancer -> altered_microbiome
-  colorectal_cancer <- age -> altered_microbiome
-  colorectal_cancer <- gender -> altered_microbiome
+  crc -> microbiome
+  crc <- age -> microbiome
+  crc <- gender -> microbiome
 }")
-ggdag(v_dag)+theme_dag()+theme_dag_gray()
+ggdag(v_dag, text_col="red")+theme_dag()+theme_dag_gray()
 ```
 
 What do we need to adjust for?
 ```{r}
-ggdag_adjustment_set(v_dag, exposure = "colorectal_cancer", outcome = "altered_microbiome")+theme_dag_gray()
+ggdag_adjustment_set(v_dag, exposure = "crc", outcome = "microbiome")+theme_dag_gray()
 ```
 
 
@@ -322,7 +323,7 @@ vm.sub <- vm.eset[,!is.na(vm.eset$study_condition)]
 table(vm.sub$study_condition, useNA="ifany")
 ```
 First we conduct a basic analysis to examine whether there are any statistically significant differences in taxa of microbiota by study condition. We use a forgiving alpha of 0.10 for adjusted p-values. We find 5 significant taxa in this crude analysis.
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
 vm.pseq <- ExpressionSet2phyloseq(vm.sub)
 dx_only <- phyloseq_to_deseq2(vm.pseq, ~ study_condition)
 dx_only <- DESeq(dx_only, test="Wald", fitType="parametric")
@@ -334,7 +335,7 @@ head(sigtab)
 ```
 
 Next we adjust (deconfound) for categorized age. We find two significant results:
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
 dx_age <- phyloseq_to_deseq2(vm.pseq, ~ study_condition + age_category)
 dx_age <- DESeq(dx_age, test="Wald", fitType="parametric")
 res = results(dx_age, cooksCutoff = FALSE, contrast=c("study_condition", "CRC", "control"))
@@ -345,7 +346,7 @@ head(sigtab)
 ```
 
 Finally we add in gender. Again observing two significant results.
-```{r}
+```{r, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
 dx_age_gender <- phyloseq_to_deseq2(vm.pseq, ~ study_condition + age_category + gender)
 dx_age_gender <- DESeq(dx_age_gender, test="Wald", fitType="parametric")
 res = results(dx_age_gender, cooksCutoff = FALSE, contrast=c("study_condition", "CRC", "control"))
