@@ -282,22 +282,22 @@
 ## The total effect of W2 on Z2 is identifiable controlling for:
 ##  *  {}
 ## The total effect of W2 on Y is identifiable controlling for:
-##  *  { V, X }
-##  *  { W1 }
+## { V, X }
+## { W1 }
 ## The total effect of X on Y is identifiable controlling for:
-##  *  { W2, Z2 }
-##  *  { V, W2 }
-##  *  { V, W1 }
-##  *  { W1, Z1 }
+## { W2, Z2 }
+## { V, W2 }
+## { V, W1 }
+## { W1, Z1 }
 ## The total effect of Z1 on X is identifiable controlling for:
-##  *  { W1 }
+## { W1 }
 ## The total effect of Z1 on Y is identifiable controlling for:
-##  *  { W1, W2, Z2 }
-##  *  { V, W1 }
+## { W1, W2, Z2 }
+## { V, W1 }
 ## The total effect of Z2 on Y is identifiable controlling for:
-##  *  { W2, X }
-##  *  { W1, W2, Z1 }
-##  *  { V, W2 }</code></pre>
+## { W2, X }
+## { W1, W2, Z1 }
+## { V, W2 }</code></pre>
 </div>
 <div id="ggdag" class="section level3">
 <h3 class="hasAnchor">
@@ -340,7 +340,7 @@
 <p>Download the data, extract the expressionset, and only take responses for which we have a value for study condition.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">vogtmann</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/curatedMetagenomicData.html">curatedMetagenomicData</a></span>(<span class="st">"VogtmannE_2016.metaphlan_bugs_list.stool"</span>, <span class="kw">dryrun</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <pre><code>## Working on VogtmannE_2016.metaphlan_bugs_list.stool</code></pre>
-<pre><code>## using temporary cache /tmp/Rtmp5JhukZ/BiocFileCache</code></pre>
+<pre><code>## using temporary cache /tmp/RtmpzXcSyp/BiocFileCache</code></pre>
 <pre><code>## snapshotDate(): 2020-07-10</code></pre>
 <pre><code>## see ?curatedMetagenomicData and browseVignettes('curatedMetagenomicData') for documentation</code></pre>
 <pre><code>## downloading 1 resources</code></pre>
