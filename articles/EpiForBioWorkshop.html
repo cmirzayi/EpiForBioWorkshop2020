@@ -304,7 +304,12 @@
 <a href="#ggdag" class="anchor"></a>ggdag</h3>
 <p>Another option for making causal diagrams is ggdag which can accept daggity objects and plots DAGs using ggplot2.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/adjustment_sets.html">ggdag_adjustment_set</a></span>(<span class="no">g1</span>, <span class="st">"X"</span>, <span class="st">"Y"</span>)</pre></body></html></div>
-<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-12-1.png" width="700"> ### DESeq2 DESeq2 uses negative binomial regression. As such, it allows you to deconfound by including the confounder as a variable in the design statement:</p>
+<p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+</div>
+<div id="deseq2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#deseq2" class="anchor"></a>DESeq2</h3>
+<p>DESeq2 uses negative binomial regression. As such, it allows you to deconfound by including the confounder as a variable in the design statement:</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">ddsSE</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeqDataSet.html">DESeqDataSet</a></span>(<span class="no">se</span>, <span class="kw">design</span> <span class="kw">=</span> ~ <span class="no">exposure</span> + <span class="no">confounder1</span> + <span class="no">confounder2</span>)
 <span class="no">ddsSE</span></pre></body></html></div>
 </div>
@@ -328,19 +333,19 @@
 <a href="#example-in-curatedmetagenomicdata" class="anchor"></a>Example in curatedMetagenomicData</h2>
 <p>Step 1: Draw our assumptions. For this example, we use the VogtmannE 2016 dataset in cMD. The dataset has 52 cases of colorectal cancer and 58 controls. First, let’s create a causal diagram for this relationship.</p>
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">v_dag</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/dagitty/man/dagitty.html">dagitty</a></span>( <span class="st">"dag {
-  colorectal_cancer -&gt; altered_microbiome
-  colorectal_cancer &lt;- age -&gt; altered_microbiome
-  colorectal_cancer &lt;- gender -&gt; altered_microbiome
+  crc -&gt; microbiome
+  crc &lt;- age -&gt; microbiome
+  crc &lt;- gender -&gt; microbiome
 }"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/ggdag.html">ggdag</a></span>(<span class="no">v_dag</span>)+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_blank.html">theme_dag</a></span>()+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_grey.html">theme_dag_gray</a></span>()</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/ggdag.html">ggdag</a></span>(<span class="no">v_dag</span>, <span class="kw">text_col</span><span class="kw">=</span><span class="st">"red"</span>)+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_blank.html">theme_dag</a></span>()+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_grey.html">theme_dag_gray</a></span>()</pre></body></html></div>
 <p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 <p>What do we need to adjust for?</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/adjustment_sets.html">ggdag_adjustment_set</a></span>(<span class="no">v_dag</span>, <span class="kw">exposure</span> <span class="kw">=</span> <span class="st">"colorectal_cancer"</span>, <span class="kw">outcome</span> <span class="kw">=</span> <span class="st">"altered_microbiome"</span>)+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_grey.html">theme_dag_gray</a></span>()</pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/adjustment_sets.html">ggdag_adjustment_set</a></span>(<span class="no">v_dag</span>, <span class="kw">exposure</span> <span class="kw">=</span> <span class="st">"crc"</span>, <span class="kw">outcome</span> <span class="kw">=</span> <span class="st">"microbiome"</span>)+<span class="fu"><a href="https://rdrr.io/pkg/ggdag/man/theme_dag_grey.html">theme_dag_gray</a></span>()</pre></body></html></div>
 <p><img src="EpiForBioWorkshop_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 <p>Download the data, extract the expressionset, and only take responses for which we have a value for study condition.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">vogtmann</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/curatedMetagenomicData.html">curatedMetagenomicData</a></span>(<span class="st">"VogtmannE_2016.metaphlan_bugs_list.stool"</span>, <span class="kw">dryrun</span> <span class="kw">=</span> <span class="fl">FALSE</span>)</pre></body></html></div>
 <pre><code>## Working on VogtmannE_2016.metaphlan_bugs_list.stool</code></pre>
-<pre><code>## using temporary cache /tmp/RtmpzXcSyp/BiocFileCache</code></pre>
+<pre><code>## using temporary cache /tmp/RtmpXbIvig/BiocFileCache</code></pre>
 <pre><code>## snapshotDate(): 2020-07-10</code></pre>
 <pre><code>## see ?curatedMetagenomicData and browseVignettes('curatedMetagenomicData') for documentation</code></pre>
 <pre><code>## downloading 1 resources</code></pre>
@@ -357,148 +362,8 @@
 ## control     CRC 
 ##      52      52</code></pre>
 <p>First we conduct a basic analysis to examine whether there are any statistically significant differences in taxa of microbiota by study condition. We use a forgiving alpha of 0.10 for adjusted p-values. We find 5 significant taxa in this crude analysis.</p>
-<div class="sourceCode" id="cb24"><html><body><pre class="r"><span class="no">vm.pseq</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/curatedMetagenomicData/man/ExpressionSet2phyloseq.html">ExpressionSet2phyloseq</a></span>(<span class="no">vm.sub</span>)</pre></body></html></div>
-<pre><code>## Warning: `data_frame()` is deprecated as of tibble 1.1.0.
-## Please use `tibble()` instead.
-## This warning is displayed once every 8 hours.
-## Call `lifecycle::last_warnings()` to see where this warning was generated.</code></pre>
-<div class="sourceCode" id="cb26"><html><body><pre class="r"><span class="no">dx_only</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span>)</pre></body></html></div>
-<pre><code>## converting counts to integer mode</code></pre>
-<pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
-## design formula are characters, converting to factors</code></pre>
-<div class="sourceCode" id="cb29"><html><body><pre class="r"><span class="no">dx_only</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_only</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
-<pre><code>## estimating size factors</code></pre>
-<pre><code>## estimating dispersions</code></pre>
-<pre><code>## gene-wise dispersion estimates</code></pre>
-<pre><code>## mean-dispersion relationship</code></pre>
-<pre><code>## final dispersion estimates</code></pre>
-<pre><code>## fitting model and testing</code></pre>
-<pre><code>## -- replacing outliers and refitting for 58 genes
-## -- DESeq argument 'minReplicatesForReplace' = 7 
-## -- original counts are preserved in counts(dds)</code></pre>
-<pre><code>## estimating dispersions</code></pre>
-<pre><code>## fitting model and testing</code></pre>
-<div class="sourceCode" id="cb39"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_only</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-<span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
-<span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
-<span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">sigtab</span>)</pre></body></html></div>
-<pre><code>##                                      baseMean log2FoldChange     lfcSE     stat
-## g__Escherichia                       1.160319       3.131873 0.8680873 3.607785
-## s__Ruminococcus_torques              2.057123       1.221872 0.3181531 3.840515
-## s__Escherichia_coli                  1.021863       3.114437 0.8976217 3.469654
-## t__Ruminococcus_torques_unclassified 1.317457       1.711670 0.4640449 3.688588
-## t__Escherichia_coli_unclassified     1.021863       3.114437 0.8976217 3.469654
-##                                            pvalue       padj  Kingdom
-## g__Escherichia                       0.0003088219 0.05507325 Bacteria
-## s__Ruminococcus_torques              0.0001227764 0.05507325 Bacteria
-## s__Escherichia_coli                  0.0005211292 0.05576082 Bacteria
-## t__Ruminococcus_torques_unclassified 0.0002255023 0.05507325 Bacteria
-## t__Escherichia_coli_unclassified     0.0005211292 0.05576082 Bacteria
-##                                              Phylum               Class
-## g__Escherichia                       Proteobacteria Gammaproteobacteria
-## s__Ruminococcus_torques                  Firmicutes          Clostridia
-## s__Escherichia_coli                  Proteobacteria Gammaproteobacteria
-## t__Ruminococcus_torques_unclassified     Firmicutes          Clostridia
-## t__Escherichia_coli_unclassified     Proteobacteria Gammaproteobacteria
-##                                                  Order             Family
-## g__Escherichia                       Enterobacteriales Enterobacteriaceae
-## s__Ruminococcus_torques                  Clostridiales    Lachnospiraceae
-## s__Escherichia_coli                  Enterobacteriales Enterobacteriaceae
-## t__Ruminococcus_torques_unclassified     Clostridiales    Lachnospiraceae
-## t__Escherichia_coli_unclassified     Enterobacteriales Enterobacteriaceae
-##                                            Genus              Species
-## g__Escherichia                       Escherichia                 &lt;NA&gt;
-## s__Ruminococcus_torques                  Blautia Ruminococcus_torques
-## s__Escherichia_coli                  Escherichia     Escherichia_coli
-## t__Ruminococcus_torques_unclassified     Blautia Ruminococcus_torques
-## t__Escherichia_coli_unclassified     Escherichia     Escherichia_coli
-##                                                                 Strain
-## g__Escherichia                                                    &lt;NA&gt;
-## s__Ruminococcus_torques                                           &lt;NA&gt;
-## s__Escherichia_coli                                               &lt;NA&gt;
-## t__Ruminococcus_torques_unclassified Ruminococcus_torques_unclassified
-## t__Escherichia_coli_unclassified         Escherichia_coli_unclassified</code></pre>
 <p>Next we adjust (deconfound) for categorized age. We find two significant results:</p>
-<div class="sourceCode" id="cb41"><html><body><pre class="r"><span class="no">dx_age</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span> + <span class="no">age_category</span>)</pre></body></html></div>
-<pre><code>## converting counts to integer mode</code></pre>
-<pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
-## design formula are characters, converting to factors</code></pre>
-<div class="sourceCode" id="cb44"><html><body><pre class="r"><span class="no">dx_age</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_age</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
-<pre><code>## estimating size factors</code></pre>
-<pre><code>## estimating dispersions</code></pre>
-<pre><code>## gene-wise dispersion estimates</code></pre>
-<pre><code>## mean-dispersion relationship</code></pre>
-<pre><code>## final dispersion estimates</code></pre>
-<pre><code>## fitting model and testing</code></pre>
-<pre><code>## -- replacing outliers and refitting for 60 genes
-## -- DESeq argument 'minReplicatesForReplace' = 7 
-## -- original counts are preserved in counts(dds)</code></pre>
-<pre><code>## estimating dispersions</code></pre>
-<pre><code>## fitting model and testing</code></pre>
-<div class="sourceCode" id="cb54"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_age</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">contrast</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"study_condition"</span>, <span class="st">"CRC"</span>, <span class="st">"control"</span>))
-<span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
-<span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
-<span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">sigtab</span>)</pre></body></html></div>
-<pre><code>##                                      baseMean log2FoldChange     lfcSE     stat
-## s__Ruminococcus_torques              2.057123       1.225518 0.3199339 3.830534
-## t__Ruminococcus_torques_unclassified 1.317457       1.706224 0.4661006 3.660634
-##                                            pvalue       padj  Kingdom
-## s__Ruminococcus_torques              0.0001278654 0.06730097 Bacteria
-## t__Ruminococcus_torques_unclassified 0.0002515924 0.06730097 Bacteria
-##                                          Phylum      Class         Order
-## s__Ruminococcus_torques              Firmicutes Clostridia Clostridiales
-## t__Ruminococcus_torques_unclassified Firmicutes Clostridia Clostridiales
-##                                               Family   Genus
-## s__Ruminococcus_torques              Lachnospiraceae Blautia
-## t__Ruminococcus_torques_unclassified Lachnospiraceae Blautia
-##                                                   Species
-## s__Ruminococcus_torques              Ruminococcus_torques
-## t__Ruminococcus_torques_unclassified Ruminococcus_torques
-##                                                                 Strain
-## s__Ruminococcus_torques                                           &lt;NA&gt;
-## t__Ruminococcus_torques_unclassified Ruminococcus_torques_unclassified</code></pre>
 <p>Finally we add in gender. Again observing two significant results.</p>
-<div class="sourceCode" id="cb56"><html><body><pre class="r"><span class="no">dx_age_gender</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/phyloseq_to_deseq2.html">phyloseq_to_deseq2</a></span>(<span class="no">vm.pseq</span>, ~ <span class="no">study_condition</span> + <span class="no">age_category</span> + <span class="no">gender</span>)</pre></body></html></div>
-<pre><code>## converting counts to integer mode</code></pre>
-<pre><code>## Warning in DESeqDataSet(se, design = design, ignoreRank): some variables in
-## design formula are characters, converting to factors</code></pre>
-<div class="sourceCode" id="cb59"><html><body><pre class="r"><span class="no">dx_age_gender</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/DESeq.html">DESeq</a></span>(<span class="no">dx_age_gender</span>, <span class="kw">test</span><span class="kw">=</span><span class="st">"Wald"</span>, <span class="kw">fitType</span><span class="kw">=</span><span class="st">"parametric"</span>)</pre></body></html></div>
-<pre><code>## estimating size factors</code></pre>
-<pre><code>## estimating dispersions</code></pre>
-<pre><code>## gene-wise dispersion estimates</code></pre>
-<pre><code>## mean-dispersion relationship</code></pre>
-<pre><code>## final dispersion estimates</code></pre>
-<pre><code>## fitting model and testing</code></pre>
-<pre><code>## -- replacing outliers and refitting for 45 genes
-## -- DESeq argument 'minReplicatesForReplace' = 7 
-## -- original counts are preserved in counts(dds)</code></pre>
-<pre><code>## estimating dispersions</code></pre>
-<pre><code>## fitting model and testing</code></pre>
-<div class="sourceCode" id="cb69"><html><body><pre class="r"><span class="no">res</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/DESeq2/man/results.html">results</a></span>(<span class="no">dx_age_gender</span>, <span class="kw">cooksCutoff</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">contrast</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"study_condition"</span>, <span class="st">"CRC"</span>, <span class="st">"control"</span>))
-<span class="no">alpha</span> <span class="kw">=</span> <span class="fl">0.10</span>
-<span class="no">sigtab</span> <span class="kw">=</span> <span class="no">res</span>[<span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span>(<span class="no">res</span>$<span class="no">padj</span> <span class="kw">&lt;</span> <span class="no">alpha</span>), ]
-<span class="no">sigtab</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="fu">as</span>(<span class="no">sigtab</span>, <span class="st">"data.frame"</span>), <span class="fu">as</span>(<span class="fu"><a href="https://rdrr.io/pkg/phyloseq/man/tax_table-methods.html">tax_table</a></span>(<span class="no">vm.pseq</span>)[<span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">sigtab</span>), ], <span class="st">"matrix"</span>))
-<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">sigtab</span>)</pre></body></html></div>
-<pre><code>##                                      baseMean log2FoldChange     lfcSE     stat
-## s__Ruminococcus_torques              2.057123        1.22658 0.3202308 3.830298
-## t__Ruminococcus_torques_unclassified 1.317457        1.73073 0.4655552 3.717562
-##                                            pvalue       padj  Kingdom
-## s__Ruminococcus_torques              0.0001279881 0.05380886 Bacteria
-## t__Ruminococcus_torques_unclassified 0.0002011546 0.05380886 Bacteria
-##                                          Phylum      Class         Order
-## s__Ruminococcus_torques              Firmicutes Clostridia Clostridiales
-## t__Ruminococcus_torques_unclassified Firmicutes Clostridia Clostridiales
-##                                               Family   Genus
-## s__Ruminococcus_torques              Lachnospiraceae Blautia
-## t__Ruminococcus_torques_unclassified Lachnospiraceae Blautia
-##                                                   Species
-## s__Ruminococcus_torques              Ruminococcus_torques
-## t__Ruminococcus_torques_unclassified Ruminococcus_torques
-##                                                                 Strain
-## s__Ruminococcus_torques                                           &lt;NA&gt;
-## t__Ruminococcus_torques_unclassified Ruminococcus_torques_unclassified</code></pre>
 <p>As mentioned in the confounding section, estimates obtained for the relationship between the exposure and the outcome have been adjusted for the included confounders (deconfounded). This means that the observed estimate is an averaged effect size across strata of the confounder(s).</p>
 </div>
 <div id="toy-problems" class="section level2">
