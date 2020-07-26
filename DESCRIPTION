@@ -20,12 +20,13 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Depends: 
     Biobase,
-    pkgdown,
     Rcpp
 Suggests: 
+    pkgdown,
     BiocStyle,
     knitr,
-    rmarkdown,
+    rmarkdown
+Imports:
     dagitty,
     DESeq2,
     edgeR,
