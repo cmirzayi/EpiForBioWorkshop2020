@@ -31,11 +31,9 @@ library(ggdag)
 
 ## Introduction: Just what is a cause anyway?
 
-Dictionary definition
+**Question:** In your own words, what is a cause? What does it mean to cause something?
 
-> something that brings about an effect or a result (Merriam-Webster)
-
-This doesn't tell us much though in terms of identifying a cause. How do we know our potential cause brought about an effect or a result? Perhaps it preceded the effect of interest. However, it could still just be a coincidence. Perhaps there is a lurking second cause that causes both our potential cause and the observed effect.
+How do we know our potential cause brought about an effect or a result? Perhaps it preceded the effect of interest. However, it could still just be a coincidence. Perhaps there is a lurking variable that truly causes both what we think is the cause and the observed effect.
 
 Despite this, humans (and animals) tend to have a relatively intuitive understanding of causation when we observe it directly. When I burn my finger while cooking, I know what caused it--my finger coming into contact with a hot stove. I could also trace the causal pathway backward and identify what caused my finger to come into contact with the hot stove in the first place--such as my motivation to cook dinner or me being distracted by the antics of my cat.
 
@@ -67,6 +65,8 @@ This diagram depicts the cause or exposure (the ambulance) and the effect or the
 
 This is the simplest form of a causal diagram. If we were to statistically model the effect for this relationship using regression, a simple two-variable model containing the exposure and the outcome would give us a correct, unbiased estimate of the actual strength of the cause on the effect. However, we are rarely that lucky. A common source of bias is confounding.
 
+**Question**: Can you think of any situations that may bias the observed relationship between the ambulance and the dog barking?
+
 ## Bias and Confounding
 
 ### Confounding
@@ -76,7 +76,6 @@ Confounding arises when a third variable is present in the relationship between 
 1. The confounder causes the outcome
 2. The confounder causes the exposure
 3. The confounder is not a mediator (i.e. it is not present on the causal pathway between the exposure and the outcome)
-
 
 Returning to our example, the relationship between the ambulance and the barking dog could be confounded by a third variable: a nearby car crash. Perhaps this car crash is what started the dog barking before the ambulance even arrived, but the ambulance caused the dog to bark even more.
 
@@ -294,10 +293,8 @@ fit <- lmFit(y, design)
 
 As mentioned in the confounding section, estimates obtained for the relationship between the exposure and the outcome have been adjusted for the included confounders (deconfounded). This means that the observed estimate is an averaged effect size across strata of the confounder(s).
 
-
-
 ## Example in curatedMetagenomicData
-Step 1: Draw our assumptions. For this example, we use the VogtmannE 2016 dataset in cMD. The dataset has 52 cases of colorectal cancer and 58 controls. First, let's create a causal diagram for this relationship.
+Step 1: Draw our assumptions. For this example, we use the VogtmannE 2016 dataset in cMD. The dataset has 52 cases of colorectal cancer and 52 controls. First, let's create a causal diagram for this relationship.
 
 ```{r}
 v_dag <- dagitty( "dag {
@@ -315,46 +312,62 @@ ggdag_adjustment_set(v_dag, exposure = "crc", outcome = "microbiome")+theme_dag_
 
 
 Download the data, extract the expressionset, and only take responses for which we have a value for study condition.
-```{r}
+```{r, warning=FALSE, message=FALSE, results='hide'}
 vogtmann <- curatedMetagenomicData("VogtmannE_2016.metaphlan_bugs_list.stool", dryrun = FALSE)
 vm.eset <-vogtmann[[1]]
 table(vm.eset$study_condition, useNA="ifany")
 vm.sub <- vm.eset[,!is.na(vm.eset$study_condition)]
+```
+
+```{r}
 table(vm.sub$study_condition, useNA="ifany")
 ```
+
+
 First we conduct a basic analysis to examine whether there are any statistically significant differences in taxa of microbiota by study condition. We use a forgiving alpha of 0.10 for adjusted p-values. We find 5 significant taxa in this crude analysis.
-```{r, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+```{r, warning=FALSE, message=FALSE, results='hide'}
 vm.pseq <- ExpressionSet2phyloseq(vm.sub)
 dx_only <- phyloseq_to_deseq2(vm.pseq, ~ study_condition)
 dx_only <- DESeq(dx_only, test="Wald", fitType="parametric")
-res = results(dx_only, cooksCutoff = FALSE)
-alpha = 0.10
-sigtab = res[which(res$padj < alpha), ]
-sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(vm.pseq)[rownames(sigtab), ], "matrix"))
-head(sigtab)
+res <- results(dx_only, cooksCutoff = FALSE)
+alpha <- 0.10
+sigtab <- res[which(res$padj < alpha), ]
+sigtab <- cbind(as(sigtab, "data.frame"), as(tax_table(vm.pseq)[rownames(sigtab), ], "matrix"))
 ```
 
+```{r}
+sigtab
+```
+
+
 Next we adjust (deconfound) for categorized age. We find two significant results:
-```{r, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+```{r, warning=FALSE, message=FALSE, results='hide'}
 dx_age <- phyloseq_to_deseq2(vm.pseq, ~ study_condition + age_category)
 dx_age <- DESeq(dx_age, test="Wald", fitType="parametric")
 res = results(dx_age, cooksCutoff = FALSE, contrast=c("study_condition", "CRC", "control"))
 alpha = 0.10
 sigtab = res[which(res$padj < alpha), ]
 sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(vm.pseq)[rownames(sigtab), ], "matrix"))
-head(sigtab)
+```
+
+```{r}
+sigtab
 ```
 
 Finally we add in gender. Again observing two significant results.
-```{r, echo=FALSE, warning=FALSE, message=FALSE, results='hide'}
+```{r, warning=FALSE, message=FALSE, results='hide'}
 dx_age_gender <- phyloseq_to_deseq2(vm.pseq, ~ study_condition + age_category + gender)
 dx_age_gender <- DESeq(dx_age_gender, test="Wald", fitType="parametric")
 res = results(dx_age_gender, cooksCutoff = FALSE, contrast=c("study_condition", "CRC", "control"))
 alpha = 0.10
 sigtab = res[which(res$padj < alpha), ]
 sigtab = cbind(as(sigtab, "data.frame"), as(tax_table(vm.pseq)[rownames(sigtab), ], "matrix"))
-head(sigtab)
 ```
+
+```{r}
+sigtab
+```
+
 
 As mentioned in the confounding section, estimates obtained for the relationship between the exposure and the outcome have been adjusted for the included confounders (deconfounded). This means that the observed estimate is an averaged effect size across strata of the confounder(s).
 
